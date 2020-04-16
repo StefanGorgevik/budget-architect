@@ -1,4 +1,4 @@
-var express = require('../node_modules/express')
+var express = require('express')
 var app = express();
 
 //making the connection with mongoose
