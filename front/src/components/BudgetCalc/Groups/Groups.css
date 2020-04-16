@@ -1,0 +1,28 @@
+.groups-main {
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+
+.groups-content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+.groups-main h1 {
+    color: white;
+    letter-spacing: 2px;
+    margin: 30px auto;
+}
+
+.groups-div {
+    width: 70%;
+    height: 100%;
+}
+
+.groups-right-div {
+    border: 2px solid black;
+    border-radius: 10px;
+    height: 80%;
+    width: 30%;
+}

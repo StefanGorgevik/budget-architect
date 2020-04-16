@@ -1,0 +1,46 @@
+.groups-table {
+    width: 100%;
+}
+
+.groups-table thead tr th {
+    border-bottom: 1px dashed white;
+    font-size: 24px;
+}
+
+.groups-table thead, 
+.groups-table tbody{ 
+    width: 100%;
+}
+.groups-table tbody tr td{ 
+    border: 2px solid black;
+}
+.groups-table tbody tr:hover{ 
+    background-color: rgba(6, 226, 226, 0.175);
+}
+
+.group-tr {
+    font-size: 26px;
+    text-transform: capitalize;
+}
+.group-tr .expand-td {
+    cursor: pointer;
+    border: 3px solid rgba(0, 0, 0, 0.596);
+}
+
+.group-tr .expand-td:hover {
+    background-color: rgba(22, 16, 16, 0.596);
+    border-color: white;
+}
+
+.fa-long-arrow-alt-right {
+    font-size: 30px;
+    padding:0;
+    padding-left: 10px;
+}
+
+#checkbox-td {
+    width: 10px;
+    padding: 0;
+    border: none;
+    padding: 0;
+}

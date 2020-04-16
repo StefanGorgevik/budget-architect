@@ -1,0 +1,33 @@
+
+
+.add-type-btn:hover,
+.table-tools-btn:hover {
+    background-color: rgba(22, 47, 47, 0.692);
+    border-color: white;
+}
+
+.filter-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.add-type-div {
+    display: flex;
+}
+
+.add-type-div input {
+    width: 70%;
+    margin: 10px auto;
+    height: 40px;
+    font-size:20px;
+    background-color: rgba(6, 41, 41, 0.24);
+    border: 2px solid black;
+    border-radius: 10px;
+    color: whitesmoke;
+    padding: 0 50px;
+    font-family: 'Tomorrow', sans-serif;
+}
+

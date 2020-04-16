@@ -1,0 +1,32 @@
+.select-mode-div {
+    display: flex;
+    align-items: center;
+    min-width: 85%;
+}
+
+#select-mode option {
+    color: black;
+    background-color: rgba(3, 3, 3, 0.24);
+    border-radius: 10px;
+    font-family: 'Tomorrow', sans-serif;
+    text-transform: capitalize;
+}
+
+.select-mode-div label {
+    font-size: 21px;
+}
+
+.select-mode-div #select-mode {
+    min-width: 65%;
+    margin: 10px auto;
+    height: 60px;
+    background-color: rgba(6, 41, 41, 0.24);
+    border: 2px solid black;
+    font-size: 25px;
+    text-align: center;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-family: 'Tomorrow', sans-serif;
+    text-transform: capitalize;
+}

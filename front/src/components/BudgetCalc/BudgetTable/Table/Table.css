@@ -1,0 +1,33 @@
+.budg-table {
+    min-height: 100%;
+    width: 100%;
+    margin: auto;
+}
+
+.budg-table tbody {
+    width: 100%;
+}
+
+.budg-table td { 
+    border: 2px solid rgb(17, 15, 15);
+    border-radius: 5px;
+    font-size: 25px;
+    width: 200px;
+    color: whitesmoke;
+}
+
+.table-div {
+    width: 95%;
+}
+.table-div h1 {
+    color: white;
+    letter-spacing: 2px;
+}
+
+.products-div{
+    width: 100%;
+    max-height: 70%;
+    border-radius: 5px;
+    overflow-y: scroll;
+}
+

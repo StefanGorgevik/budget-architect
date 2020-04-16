@@ -1,0 +1,39 @@
+
+.budg-edit-btn:hover {
+    border-color: white;
+}
+.budg-edit-btn-disabled {
+    pointer-events: none;
+    color: grey;
+    border-color: grey;
+}
+.product-tr td{
+    width: 200px;
+    text-transform: capitalize;
+}
+.product-tr .number-td{
+    width: 100px;
+}
+
+.number-td span{
+   font-size: 18px;
+   color: rgb(246, 178, 178);
+}
+
+.product-tr:hover {
+    background-color: rgba(0, 128, 128, 0.472);
+}
+
+#edit-td {
+    width:5px;
+    padding: 0;
+    margin: 0;
+    border:none;
+}
+
+#checkbox-td {
+    width: 10px;
+    padding: 0;
+    border: none;
+    padding: 0;
+}

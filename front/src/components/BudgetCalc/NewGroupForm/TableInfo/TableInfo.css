@@ -1,0 +1,12 @@
+.ng-info-main {
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+    justify-content: space-around;
+    height: 30px;
+}
+
+.ng-info-main p span {
+    font-size: 18px;
+    font-weight: bold;
+}

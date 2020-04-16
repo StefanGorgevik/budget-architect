@@ -1,0 +1,43 @@
+.ng-main {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    margin: auto;
+    background-color: rgb(156, 148, 148);
+    color: white;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.59);
+}
+
+.ng-main .ng-div {
+    width: 28%;
+    min-height: 55%;
+    max-height: 100%;
+    background-color:rgba(31, 27, 27);
+    padding: 30px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    font-family: 'Tomorrow', sans-serif;
+}
+
+.ng-main h3 {
+    color: white;
+    margin: 20px auto;
+    width: 100%;
+    font-size: 23px;
+}
+
+
+.ng-save-grp-btn {
+    margin-top: 10px;
+    min-width: 30%;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
