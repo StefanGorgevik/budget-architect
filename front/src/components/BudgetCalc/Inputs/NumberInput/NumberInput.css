@@ -1,0 +1,12 @@
+.number-input-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+}
+
+.number-input-div input{
+    width: 95%;
+}

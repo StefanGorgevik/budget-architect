@@ -1,4 +1,4 @@
-.err-alert-main {
+.account-main {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -12,35 +12,29 @@
     background: rgba(0, 0, 0, 0.59);
 }
 
-.err-alert-div {
-    width: 20%;
-    height: 35%;
+.account-div {
+    min-width: 30%;
+    min-height: 65%;
     background-color:rgb(17, 12, 12);
     padding: 20px;
     border: 0.5px solid whitesmoke;
-    border-radius: 35px;
+    border-radius: 5px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
 }
 
-.close-err-alert-button {
+.account-div h1 {
+    text-transform: capitalize;
+    border-bottom: 1px solid white;
     width: 50%;
-    height: 35px;
-    margin: 20px auto;
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-    background-color: inherit;
-    color: white;
-    border: 1px solid white;
-    border-radius: 10px;
-    cursor: pointer;
+    margin: 0 auto;
+    margin-bottom: 5px;
 }
-.err-alert-div h1 {
-    min-height: 40%;
-}
-.err-alert-div p {
-    min-height: 20%;
+
+.account-div .btns-div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }

@@ -74,7 +74,9 @@ const initState = {
     ],
     addNewGroupClicked: false,
     mode: 'products',
-    productToEdit: {}
+    productToEdit: {},
+    signInClicked: false,
+    accountClicked: false
 }
 
 export function reducer(state = initState, action) {
@@ -124,6 +126,14 @@ export function reducer(state = initState, action) {
                 ...state, products: [...state.products].sort((a, b) =>
                     (a[val] > b[val]) ? 1 : ((b[val] > a[val]) ? -1 : 0))
             }
+        }
+        case "SIGN_IN_CLICKED": {
+            return {
+                ...state,  signInClicked: action.payload}
+        }
+        case "ACCOUNT_CLICKED": {
+            return {
+                ...state,  accountClicked: action.payload}
         }
         default:
             return state;

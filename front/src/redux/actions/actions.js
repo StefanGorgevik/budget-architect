@@ -64,3 +64,15 @@ export function sortProducts(val) {
         payload: val
     }
 }
+export function accountClickedAction(bool) {
+    return {
+        type: "ACCOUNT_CLICKED",
+        payload: bool
+    }
+}
+export function signInClickedAction(bool) {
+    return {
+        type: "SIGN_IN_CLICKED",
+        payload: bool
+    }
+}

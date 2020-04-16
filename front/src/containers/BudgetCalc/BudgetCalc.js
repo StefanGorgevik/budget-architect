@@ -1,6 +1,6 @@
 import React from 'react'
 import './BudgetCalc.css'
-import Inputs from '../../components/BudgetCalc/Inputs/Inputs'
+import ProductInputs from '../../components/BudgetCalc/Inputs/ProductInputs/ProductInputs'
 import TableTools from '../../components/BudgetCalc/TableTools/TableTools'
 import Table from '../../components/BudgetCalc/BudgetTable/Table/Table'
 import Groups from '../../components/BudgetCalc/Groups/Groups'
@@ -9,7 +9,8 @@ import store from '../../redux/store'
 import { sortGroups, sortProducts, saveProduct, editProduct, handleIsChecked } from '../../redux/actions/actions'
 import Alert from '../../components/BudgetCalc/Alert/Alert'
 import NewGroup from '../../components/BudgetCalc/NewGroupForm/NewGroup/NewGroup'
-
+import Account from '../../components/BudgetCalc/Account/Account'
+import SignIn from '../../components/BudgetCalc/SignIn/SignIn'
 class BudgetCalc extends React.Component {
     constructor(props) {
         super(props)
@@ -89,14 +90,14 @@ class BudgetCalc extends React.Component {
         }
         return (
             <main className="budget-calc-main">
+            {this.props.accountClicked ? <Account/> : null}
+            {this.props.signInClicked ? <SignIn/> : null}
                 {this.props.addNewGroupClicked ? <NewGroup /> : null}
-
                 {this.state.error ? <Alert click={this.closeErrorAlert}
                     text="Please fill up every field!"
                 /> : null}
-                <h1 className="budget-calc-h1">Budget Calculator</h1>
                 {this.props.mode === "products" ?
-                    <Inputs saveProduct={this.saveProduct}
+                    <ProductInputs saveProduct={this.saveProduct}
                         handleInputValue={this.handleInputValue}
                         product={this.state.product}
                         editClicked={this.state.editClicked}
@@ -128,7 +129,9 @@ function mapStateToProps(state) {
         mode: state.mode,
         products: state.products,
         groups: state.productGroups,
-        addNewGroupClicked: state.addNewGroupClicked
+        addNewGroupClicked: state.addNewGroupClicked,
+        accountClicked: state.accountClicked,
+        signInClicked: state.signInClicked
     }
 }
 
