@@ -1,6 +1,6 @@
 const path = require('path');
 
-const cors = requore('cors')
+const cors = require('cors')
 app.use(cors());
 
 
