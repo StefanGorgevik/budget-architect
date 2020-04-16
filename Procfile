@@ -1,0 +1,1 @@
+web: node services/proxy.js & node services/front.js & node services/auth.js
