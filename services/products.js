@@ -22,6 +22,7 @@ app.use(
     )
 );
 
+app.get('/app/v1/products/get/:id', productHandler.getProducts)
 app.post('/app/v1/products/', productHandler.saveProduct)
 
 app.listen(8081, (err) => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import './Header.css'
-import { accountClickedAction, signInClickedAction } from '../../../redux/actions/userActions'
-import { connect } from 'react-redux'
+import {accountClickedAction, signInClickedAction} from '../../../redux/actions/userActions'
+import {connect} from 'react-redux'
 
 function Header(props) {
     const accountClickedHandler = () => {
@@ -10,7 +10,6 @@ function Header(props) {
     const signInClickedHandler = () => {
         props.signInClickedAction(true)
     }
-
 
     return (
         <nav className="header-main">

@@ -6,7 +6,7 @@ import Table from '../../components/BudgetCalc/BudgetTable/Table/Table'
 import Groups from '../../components/BudgetCalc/Groups/Groups'
 import { connect } from 'react-redux'
 import store from '../../redux/store'
-import { sortGroups, sortProducts, saveProduct, editProduct, handleIsChecked } from '../../redux/actions/productsActions'
+import { sortGroups, sortProducts, editProduct, handleIsChecked } from '../../redux/actions/productsActions'
 import Alert from '../../components/BudgetCalc/Alert/Alert'
 import NewGroup from '../../components/BudgetCalc/NewGroupForm/NewGroup/NewGroup'
 import Account from '../../components/BudgetCalc/Account/Account'
@@ -33,6 +33,23 @@ class BudgetCalc extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if(this.state.isUserLogged) {
+            var id = localStorage.getItem('user-id')
+            axios.get(`http://localhost:8081/app/v1/products${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                }
+            })
+                .then((res) => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+    }
+
     handleInputValue = (event) => {
         this.setState({ ...this.state, product: { ...this.state.product, [event.target.id]: event.target.value } })
     }
@@ -42,7 +59,7 @@ class BudgetCalc extends React.Component {
         var id = localStorage.getItem('user-id')
         e.preventDefault()
         if (product.name !== '' && product.type !== '' && product.price !== 0 && product.quantity >= 1 && product.date !== '') {
-            axios.post('http://localhost:8081/app/v1/products/' , {
+            axios.post('http://localhost:8081/app/v1/products/', {
                 name: product.name,
                 type: product.type,
                 price: product.price,
@@ -54,12 +71,12 @@ class BudgetCalc extends React.Component {
                     'Authorization': `Bearer ${localStorage.getItem('jwt')}`
                 }
             })
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             // product.id = Math.floor(Math.random() * 1000)
             // product.isChecked = false
             // store.dispatch(saveProduct(product))
@@ -118,29 +135,33 @@ class BudgetCalc extends React.Component {
                 {this.state.error ? <Alert click={this.closeErrorAlert}
                     text="Please fill up every field!"
                 /> : null}
-                {this.props.mode === "products" ?
-                    <ProductInputs saveProduct={this.saveProduct}
-                        handleInputValue={this.handleInputValue}
-                        product={this.state.product}
-                        editClicked={this.state.editClicked}
-                        editProduct={this.editProduct}
-                        types={this.state.types}
-                    /> : null}
-                <div className="budget-calc-content-div">
-                    {this.props.mode === "products" ?
-                        <Table
-                            properties={this.state.properties}
-                            products={this.props.products}
-                            productToEdit={this.productToEdit}
-                            handleCheckboxChange={this.handleCheckboxChange}
-                            editClicked={this.state.editClicked}
-                            totalPrice={totPrice}
-                        /> : <Groups />}
-                    <TableTools
-                        deleteProducts={this.deleteProducts}
-                        selectFilterHandler={this.selectFilterHandler}
-                    />
-                </div>
+
+                {this.props.isUserLogged ?
+                    <>
+                        {this.props.mode === "products" ?
+                            <ProductInputs saveProduct={this.saveProduct}
+                                handleInputValue={this.handleInputValue}
+                                product={this.state.product}
+                                editClicked={this.state.editClicked}
+                                editProduct={this.editProduct}
+                                types={this.state.types}
+                            /> : null}
+                        <div className="budget-calc-content-div">
+                            {this.props.mode === "products" ?
+                                <Table
+                                    properties={this.state.properties}
+                                    products={this.props.products}
+                                    productToEdit={this.productToEdit}
+                                    handleCheckboxChange={this.handleCheckboxChange}
+                                    editClicked={this.state.editClicked}
+                                    totalPrice={totPrice}
+                                /> : <Groups />}
+                            <TableTools
+                                deleteProducts={this.deleteProducts}
+                                selectFilterHandler={this.selectFilterHandler}
+                            />
+                        </div>
+                    </> : null}
             </main>
         )
     }

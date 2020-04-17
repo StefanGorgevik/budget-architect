@@ -14,7 +14,6 @@ var Product = mongoose.model(
 const saveProduct = (data) => {
     return new Promise((success, fail) => {
         var product = new Product(data)
-        console.log(data)
         product.save(data, err => {
             if(err) {
                 return fail;
@@ -25,70 +24,20 @@ const saveProduct = (data) => {
     })
 }
 
-// const saveDiet = (data) => {
-//     return new Promise((success, fail) => {
-//         var diet = new Diet(data)
-//         diet.save(data, err => {
-//             if(err) {
-//                 return fail;
-//             } else {
-//                 return success(data)
-//             }
-//         })
-//     })
-// }
-
-// const getWorkoutPlan = (userID) => {
-//     return new Promise((success, fail) => {
-//         WorkoutPlan.find({userID: userID}, (err, data) => {
-//             if(err) {
-//                 return fail(err)
-//             } else {
-//                 return success(data[0])
-//             }
-//         })
-//     })
-// }
-
-// const updateWorkoutPlan = (dietID, userID, data) => {
-//     return new Promise((success, fail) => {
-//         WorkoutPlan.updateOne({_id: dietID, userID: userID}, data, err =>{
-//             if(err) {
-//                 return fail(err)
-//             } 
-//             return success(data)
-//         })
-//     })
-// }
-
-// const getDiet = (userID) => {
-//     return new Promise((success, fail) => {
-//         Diet.find({userID: userID}, (err, data) =>{
-//             if(err) {
-//                 return fail(err)
-//             } 
-//             return success(data)
-//         })
-//     })
-// }
-
-// const updateDiet = (dietID, userID, data) => {
-//     return new Promise((success, fail) => {
-//         Diet.updateOne({_id: dietID, userID: userID}, data, err =>{
-//             if(err) {
-//                 return fail(err)
-//             } 
-//             return success(data)
-//         })
-//     })
-// }
-
+const getProducts = (id) => {
+    return new Promise((success, fail) => {
+       Product.find({userID: id}, (err, data) => {
+           if(err) {
+               console.log(err)
+               return fail;
+           }
+           console.log(data)
+           return success(data)
+       })
+    })
+}
 
 module.exports = {
     saveProduct,
-    // saveDiet,
-    // getWorkoutPlan,
-    // getDiet,
-    // updateDiet,
-    // updateWorkoutPlan
+    getProducts
 }

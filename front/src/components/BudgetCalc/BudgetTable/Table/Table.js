@@ -3,31 +3,63 @@ import './Table.css'
 import Tbody from '../Tbody/Tbody'
 import Thead from '../Thead/Thead'
 import TableInfo from '../TableInfo/TableInfo'
-
-function Table(props) {
+import axios from 'axios'
+import {getProducts} from '../../../../redux/actions/productsActions'
+import {connect} from 'react-redux'
+class Table extends React.Component {
+    constructor(props) {
+        super(props) 
+        this.state = {
+            products: []
+        }
+    }
+    componentDidMount() {
+            var id = localStorage.getItem('user-id')
+            axios.get(`http://localhost:8081/app/v1/products/get/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                }
+            })
+                .then((res) => {
+                    console.log(res)
+                    this.props.getProducts(res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+    
+    render() {
     var productsLengths = 0;
-    if(props.products) {
-        productsLengths = props.products.length
+    if(this.props.products) {
+        productsLengths = this.props.products.length
     }
     return (
         <div className="table-div">
             <h1>Products</h1>
-            <TableInfo totalPrice={props.totalPrice}
+            <TableInfo totalPrice={this.props.totalPrice}
                 productsLength={productsLengths}
-                selectModeHandler={props.selectModeHandler}
+                selectModeHandler={this.props.selectModeHandler}
             />
-            <Thead properties={props.properties} />
+            <Thead properties={this.props.properties} />
             <div className="products-div">
                 <table className="budg-table">
-                    <Tbody products={props.products}
-                        productToEdit={props.productToEdit}
-                        handleCheckboxChange={props.handleCheckboxChange}
-                        editClicked={props.editClicked}
+                    <Tbody products={this.props.products}
+                        productToEdit={this.props.productToEdit}
+                        handleCheckboxChange={this.props.handleCheckboxChange}
+                        editClicked={this.props.editClicked}
                     />
                 </table>
             </div>
         </div>
     )
+    }
 }
 
-export default Table
+function mapDispatchToProps(dispatch) {
+    return {
+        getProducts: (products) => dispatch(getProducts(products))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Table)

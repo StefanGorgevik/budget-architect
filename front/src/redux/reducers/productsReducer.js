@@ -1,4 +1,5 @@
 const initState = {
+    products: [],
     addNewGroupClicked: false,
     mode: 'products',
     productToEdit: {}
@@ -6,8 +7,8 @@ const initState = {
 
 export function productsReducer(state = initState, action) {
     switch (action.type) {
-        case "SAVE_PRODUCT": {
-            return { ...state, products: [...state.products, action.payload] }
+        case "GET_PRODUCTS": {
+            return { ...state, products: action.payload }
         }
         case "EDIT_PRODUCT": {
             return {

@@ -14,6 +14,18 @@ const saveProduct = (req,res) => {
     })
 }
 
+const getProducts = (req, res) => {
+    productModel.getProducts(req.params.id)
+        .then(data => {
+            console.log(data)
+            res.status(200).send(data);
+        })
+        .catch(err => {
+            console.log(err)
+
+            res.status(500).send(err);
+        })
+}
 
 
 // const getWorkoutPlan = (req, res) => {
@@ -58,9 +70,5 @@ const saveProduct = (req,res) => {
 
 module.exports = {
     saveProduct,
-    // saveDiet,
-    // getWorkoutPlan,
-    // getDiet,
-    // updateDiet,
-    // updateWorkoutPlan
+    getProducts
 }

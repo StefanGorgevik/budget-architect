@@ -1,7 +1,7 @@
-export function saveProduct(product) {
+export function getProducts(products) {
     return {
-        type: "SAVE_PRODUCT",
-        payload: product
+        type: "GET_PRODUCTS",
+        payload: products
     }
 }
 export function editProduct(product) {
