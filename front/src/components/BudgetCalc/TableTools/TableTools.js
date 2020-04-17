@@ -46,11 +46,15 @@ class TableTools extends React.Component {
         store.dispatch(deleteProducts())
         this.setState({ deleteProducts: false })
     }
+    
+    closeAlert = () => {
+        this.setState({ deleteProducts: false })
+    }
 
     render() {
         return (
             <>
-                {this.state.deleteProducts ? <Alert click={this.deleteProducts}
+                {this.state.deleteProducts ? <Alert accept={this.deleteProducts} decline={this.closeAlert}
                     text="You are about to delete several items. Are you sure?" /> : null}
                 <div className={this.state.hovered ? "table-tools-div table-tools-div-active" : "table-tools-div"}
                     onMouseEnter={this.handleHover}

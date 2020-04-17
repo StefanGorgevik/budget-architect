@@ -1,5 +1,6 @@
 import React from 'react'
 import './Alert.css'
+import Button from '../Button/Button'
 
 function Alert(props) {
     return (
@@ -7,7 +8,14 @@ function Alert(props) {
             <div className="err-alert-div">
                 <h1>Error</h1>
                 <p>{props.text}</p>
-                <button onClick={props.click} className="close-err-alert-button">Ok</button>
+                <Button click={props.accept}
+                        name="ng-btn"
+                        content="OK"
+                />
+                <Button click={props.decline}
+                        name="ng-btn"
+                        content="CLOSE"
+                />
             </div>
         </main>
     )

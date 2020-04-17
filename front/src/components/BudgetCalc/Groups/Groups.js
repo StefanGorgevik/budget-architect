@@ -6,13 +6,16 @@ import Button from '../Button/Button'
 import GroupsTable from './GroupsTable/GroupsTable'
 import store from '../../../redux/store'
 import { addNewGroupClicked, deleteGroup } from '../../../redux/actions/actions'
+import Alert from '../Alert/Alert'
 
 class Groups extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             selected: [],
-            groupsToDelete: []
+            groupsToDelete: [],
+            deleteClicked: false,
+            groupToDelete: null
         }
     }
 
@@ -25,7 +28,16 @@ class Groups extends React.Component {
     }
 
     deleteGroupHandler = (group) => {
-        store.dispatch(deleteGroup(group))
+        this.setState({groupToDelete: group, deleteClicked: true })
+    }
+
+    acceptDelete = () => {
+        store.dispatch(deleteGroup(this.state.groupToDelete))
+        this.setState({deleteClicked: false})
+    }
+
+    closeAlert = () => {
+        this.setState({deleteClicked: false})
     }
 
     render() {
@@ -40,6 +52,9 @@ class Groups extends React.Component {
         }
         return (
             <main className="groups-main">
+                {this.state.deleteClicked ? <Alert accept={this.acceptDelete} decline={this.closeAlert} 
+                     text="You are about to delete a group of products. Are you sure?"
+                /> : null}
                 <h1>Groups</h1>
                 <div className="groups-content">
                     <div className="groups-div">
