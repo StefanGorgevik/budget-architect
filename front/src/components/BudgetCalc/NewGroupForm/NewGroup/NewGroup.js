@@ -4,7 +4,7 @@ import Inputs from '../Inputs-NG/Inputs'
 import Table from '../Table-NG/Table'
 import Button from '../../Button/Button'
 import store from '../../../../redux/store'
-import { addNewGroupClicked, saveGroup } from '../../../../redux/actions/actions'
+import { addNewGroupClicked, saveGroup } from '../../../../redux/actions/productsActions'
 import Alert from '../../Alert/Alert'
 
 class NewGroup extends React.Component {

@@ -1,8 +1,7 @@
 import React from 'react'
 import './TableTools.css'
 import store from '../../../redux/store'
-import { addNewGroupClicked, changeMode, deleteProducts } from '../../../redux/actions/actions'
-import { connect } from 'react-redux'
+import { addNewGroupClicked, changeMode, deleteProducts } from '../../../redux/actions/productsActions'
 import ToolsContent from './ToolsContent/ToolsContent'
 import Alert from '../Alert/Alert'
 
@@ -82,10 +81,5 @@ class TableTools extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        types: state.budgetCalcTypes
-    }
-}
 
-export default connect(mapStateToProps)(TableTools);
+export default TableTools;

@@ -19,6 +19,10 @@
     width: 95%;
 }
 
+#email {
+    text-transform: lowercase;
+}
+
 ::placeholder {
     font-size: 20px;
     text-transform: capitalize;

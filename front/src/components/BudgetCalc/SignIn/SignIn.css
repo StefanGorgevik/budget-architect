@@ -38,3 +38,15 @@
     justify-content: center;
     width: 100%;
 }
+
+.here-span {
+    font-size: 20px;
+    cursor: pointer;
+    color: rgb(224, 213, 213);
+    margin: 0 5px;
+}
+
+.no-acc-p {
+    font-size: 18px;
+    color: rgb(82, 80, 80)
+}

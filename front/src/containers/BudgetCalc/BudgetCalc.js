@@ -6,7 +6,7 @@ import Table from '../../components/BudgetCalc/BudgetTable/Table/Table'
 import Groups from '../../components/BudgetCalc/Groups/Groups'
 import { connect } from 'react-redux'
 import store from '../../redux/store'
-import { sortGroups, sortProducts, saveProduct, editProduct, handleIsChecked } from '../../redux/actions/actions'
+import { sortGroups, sortProducts, saveProduct, editProduct, handleIsChecked } from '../../redux/actions/productsActions'
 import Alert from '../../components/BudgetCalc/Alert/Alert'
 import NewGroup from '../../components/BudgetCalc/NewGroupForm/NewGroup/NewGroup'
 import Account from '../../components/BudgetCalc/Account/Account'
@@ -80,18 +80,20 @@ class BudgetCalc extends React.Component {
     }
 
     render() {
-        var totPrice = 0;
-        for (var i = 0; i < this.state.products.length; i++) {
-            if (this.state.products[i].quantity >= 1) {
-                totPrice += (this.state.products[i].quantity * Number(this.state.products[i].price))
-            } else if (this.state.products[i].quantity < 1) {
-                totPrice += Number(this.state.products[i].price)
+        if (this.state.products) {
+            var totPrice = 0;
+            for (var i = 0; i < this.state.products.length; i++) {
+                if (this.state.products[i].quantity >= 1) {
+                    totPrice += (this.state.products[i].quantity * Number(this.state.products[i].price))
+                } else if (this.state.products[i].quantity < 1) {
+                    totPrice += Number(this.state.products[i].price)
+                }
             }
         }
         return (
             <main className="budget-calc-main">
-            {this.props.accountClicked ? <Account/> : null}
-            {this.props.signInClicked ? <SignIn/> : null}
+                {this.props.accountClicked ? <Account /> : null}
+                {this.props.signInClicked ? <SignIn /> : null}
                 {this.props.addNewGroupClicked ? <NewGroup /> : null}
                 {this.state.error ? <Alert click={this.closeErrorAlert}
                     text="Please fill up every field!"
@@ -126,12 +128,12 @@ class BudgetCalc extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        mode: state.mode,
-        products: state.products,
-        groups: state.productGroups,
-        addNewGroupClicked: state.addNewGroupClicked,
-        accountClicked: state.accountClicked,
-        signInClicked: state.signInClicked
+        mode: state.productsReducer.mode,
+        products: state.productsReducer.products,
+        groups: state.productsReducer.productGroups,
+        addNewGroupClicked: state.productsReducer.addNewGroupClicked,
+        accountClicked: state.userReducer.accountClicked,
+        signInClicked: state.userReducer.signInClicked
     }
 }
 

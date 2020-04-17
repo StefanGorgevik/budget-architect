@@ -2,8 +2,10 @@ import React from 'react'
 import './GroupsTable.css'
 import Button from '../../Button/Button'
 
-function GroupsTable (props) {
-        var groups = props.groups.map((group, i) => {
+function GroupsTable(props) {
+    var groups = []
+    if (props.groups) {
+        groups = props.groups.map((group, i) => {
             return (
                 <tr key={group + i} className="group-tr">
                     <td>{group.groupDate}</td>
@@ -19,24 +21,25 @@ function GroupsTable (props) {
                 </tr>
             )
         })
-        return (
-            <div>
-                <table className="groups-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Total Price</th>
-                            <th>Products</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {groups}
-                    </tbody>
-                </table>
-            </div>
-        )
+    }
+    return (
+        <div>
+            <table className="groups-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Price</th>
+                        <th>Products</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {groups}
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 export default GroupsTable;
