@@ -14,7 +14,7 @@
     width: 50%;
 }
 
-#name, #country, #type, #email, #password, #birthday {
+#name, #country, #type, #email, #password, #date {
     text-transform: capitalize;
     width: 95%;
 }

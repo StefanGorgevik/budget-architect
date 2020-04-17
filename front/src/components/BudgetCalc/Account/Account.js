@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './Account.css'
 import TextInput from '../Inputs/TextInput/TextInput'
-import DateInput from '../Inputs/DateInput/DateInput'
 import EmailInput from '../Inputs/EmailInput/EmailInput'
 import PasswordInput from '../Inputs/PasswordInput/PasswordInput'
 import NumberInput from '../Inputs/NumberInput/NumberInput'
@@ -14,8 +13,6 @@ class Account extends Component {
         super(props)
         this.state = {
             name: '',
-            birthday: '',
-            country: '',
             income: 0,
             email: '',
             password: ''
@@ -31,7 +28,7 @@ class Account extends Component {
     }
 
     editAccountHandler = () => {
-            alert("not available")
+        alert("not available")
     }
 
 
@@ -40,12 +37,18 @@ class Account extends Component {
             <main className="account-main">
                 <div className="account-div">
                     <h1>Account</h1>
-                    <TextInput saveValue={this.saveInputValue} id="name" label='full name' placeholder="full name" value={this.state.name} />
-                    <DateInput saveValue={this.saveInputValue} id="birthday" label='date of birth' placeholder="date of birth" value={this.state.birthday} />
-                    <TextInput saveValue={this.saveInputValue} id="country" label='country' placeholder="country" value={this.state.country} />
-                    <NumberInput saveValue={this.saveInputValue} id="income" label='income' placeholder="income" value={this.state.income} />
-                    <EmailInput saveValue={this.saveInputValue} id="email" label='email' placeholder="email" value={this.state.email} />
-                    <PasswordInput saveValue={this.saveInputValue} id="password" label='password' placeholder="password" value={this.state.password} />
+                    <TextInput saveValue={this.saveInputValue} id="name"
+                        label='full name' placeholder="full name"
+                        value={this.state.name} />
+                    <NumberInput saveValue={this.saveInputValue}
+                        id="income" label='income' placeholder="income"
+                        value={this.state.income} />
+                    <EmailInput saveValue={this.saveInputValue}
+                        id="email" label='email' placeholder="email"
+                        value={this.state.email} />
+                    <PasswordInput saveValue={this.saveInputValue}
+                        id="password" label='password' placeholder="password"
+                        value={this.state.password} />
                     <div className="btns-div">
                         <Button click={this.closeAccountHandler}
                             content='Close'

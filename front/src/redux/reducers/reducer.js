@@ -32,9 +32,7 @@ const initState = {
         {
             id: 0,
             groupDate: "2019-05-01",
-            type: 'groceries',
             groupTotalPrice: 500,
-            isChecked: false,
             products: [
                 {
                     id: 25,
@@ -53,9 +51,7 @@ const initState = {
         {
             id: 22,
             groupDate: "2020-01-01",
-            type: "electronics",
             groupTotalPrice: 600,
-            isChecked: false,
             products: [
                 {
                     id: 23,
@@ -75,7 +71,7 @@ const initState = {
     addNewGroupClicked: false,
     mode: 'products',
     productToEdit: {},
-    signInClicked: false,
+    signInClicked: true,
     accountClicked: false
 }
 

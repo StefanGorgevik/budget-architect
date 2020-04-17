@@ -7,7 +7,6 @@ function GroupsTable (props) {
             return (
                 <tr key={group + i} className="group-tr">
                     <td>{group.groupDate}</td>
-                    <td>{group.type}</td>
                     <td>{group.groupTotalPrice}</td>
                     <td onClick={() => props.selectedGroupHandler(group)} className="expand-td">
                         <span>Open</span>  <i className="fas fa-long-arrow-alt-right"></i>
@@ -26,7 +25,6 @@ function GroupsTable (props) {
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Type</th>
                             <th>Total Price</th>
                             <th>Products</th>
                             <th></th>

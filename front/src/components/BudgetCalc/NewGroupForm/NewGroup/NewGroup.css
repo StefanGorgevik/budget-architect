@@ -12,17 +12,18 @@
     background: rgba(0, 0, 0, 0.59);
 }
 
-.ng-main .ng-div {
-    width: 28%;
-    min-height: 55%;
+.ng-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    width: 55%;
+    min-height: 85%;
     max-height: 100%;
     background-color:rgba(31, 27, 27);
     padding: 30px;
     border-radius: 5px;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    margin: auto;
     font-family: 'Tomorrow', sans-serif;
 }
 
@@ -33,11 +34,20 @@
     font-size: 23px;
 }
 
+.ng-left-side {
+    width: 60%;
+    height: 100%;;
+}
+.ng-right-side {
+    border: 1px solid rgba(255, 255, 255, 0.137);
+    margin: 2px;
+    width: 40%;
+    height: 100%;
+    padding: 5px;
+}
 
-.ng-save-grp-btn {
-    margin-top: 10px;
-    min-width: 30%;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
+.ng-btns-div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }

@@ -13,6 +13,7 @@ function NumberInput(props) {
                 type='number'
                 id={props.id}
                 value={props.value}
+                required
             />
         </div>
     )

@@ -12,10 +12,12 @@ function Alert(props) {
                         name="ng-btn"
                         content="OK"
                 />
+                {props.show ?
                 <Button click={props.decline}
                         name="ng-btn"
                         content="CLOSE"
                 />
+                 : null}
             </div>
         </main>
     )
