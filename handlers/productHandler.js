@@ -1,11 +1,11 @@
-const planModel = require('../models/productModel')
-const usersModel = require('../models/usersModel')
+const productModel = require('../models/productModel')
+// const usersModel = require('../models/usersModel')
 
-const saveWorkoutPlan = (req,res) => {
-    const newPlan = req.body
+const saveProduct = (req,res) => {
+    const product = req.body
     const user = req.user;
-    usersModel.updateUser(user.id, {...user, isWorkoutPlanCreated: true})
-    planModel.saveWorkoutPlan({...newPlan, userID: user.id})
+    // usersModel.updateUser(user.id, {...user})
+    productModel.saveProduct({...product, userID: user.id})
     .then(() => {
         res.status(201).send("Workout plan created!")
     })
@@ -16,51 +16,51 @@ const saveWorkoutPlan = (req,res) => {
 
 
 
-const getWorkoutPlan = (req, res) => {
-    planModel.getWorkoutPlan(req.params.id)
-    .then((data) => {
-        res.status(200).send(data)
-    })
-    .catch((err) => {
-        res.status(500).send(err)
-    })
-}
+// const getWorkoutPlan = (req, res) => {
+//     planModel.getWorkoutPlan(req.params.id)
+//     .then((data) => {
+//         res.status(200).send(data)
+//     })
+//     .catch((err) => {
+//         res.status(500).send(err)
+//     })
+// }
 
-const updateWorkoutPlan = (req, res) => {
-    planModel.updateWorkoutPlan(req.params.id, req.user.id, req.body)
-    .then((data) => {
-        res.status(201).send(data)
-    })
-    .catch((err) => {
-        res.status(500).send(err)
-    })
-}
+// const updateWorkoutPlan = (req, res) => {
+//     planModel.updateWorkoutPlan(req.params.id, req.user.id, req.body)
+//     .then((data) => {
+//         res.status(201).send(data)
+//     })
+//     .catch((err) => {
+//         res.status(500).send(err)
+//     })
+// }
 
-const getDiet = (req, res) => {
-    planModel.getDiet(req.params.id)
-    .then((data) => {
-        res.status(200).send(data)
-    })
-    .catch((err) => {
-        res.status(500).send(err)
-    })
-}
+// const getDiet = (req, res) => {
+//     planModel.getDiet(req.params.id)
+//     .then((data) => {
+//         res.status(200).send(data)
+//     })
+//     .catch((err) => {
+//         res.status(500).send(err)
+//     })
+// }
 
-const updateDiet = (req, res) => {
-    planModel.updateDiet(req.params.id, req.user.id, req.body)
-    .then((data) => {
-        res.status(201).send(data)
-    })
-    .catch((err) => {
-        res.status(500).send(err)
-    })
-}
+// const updateDiet = (req, res) => {
+//     planModel.updateDiet(req.params.id, req.user.id, req.body)
+//     .then((data) => {
+//         res.status(201).send(data)
+//     })
+//     .catch((err) => {
+//         res.status(500).send(err)
+//     })
+// }
 
 module.exports = {
-    saveWorkoutPlan,
-    saveDiet,
-    getWorkoutPlan,
-    getDiet,
-    updateDiet,
-    updateWorkoutPlan
+    saveProduct,
+    // saveDiet,
+    // getWorkoutPlan,
+    // getDiet,
+    // updateDiet,
+    // updateWorkoutPlan
 }

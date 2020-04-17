@@ -11,6 +11,7 @@ import Alert from '../../components/BudgetCalc/Alert/Alert'
 import NewGroup from '../../components/BudgetCalc/NewGroupForm/NewGroup/NewGroup'
 import Account from '../../components/BudgetCalc/Account/Account'
 import SignIn from '../../components/BudgetCalc/SignIn/SignIn'
+import axios from 'axios'
 class BudgetCalc extends React.Component {
     constructor(props) {
         super(props)
@@ -38,15 +39,34 @@ class BudgetCalc extends React.Component {
 
     saveProduct = (e) => {
         var product = this.state.product
+        var id = localStorage.getItem('user-id')
         e.preventDefault()
         if (product.name !== '' && product.type !== '' && product.price !== 0 && product.quantity >= 1 && product.date !== '') {
-            product.id = Math.floor(Math.random() * 1000)
-            product.isChecked = false
-            store.dispatch(saveProduct(product))
-            this.setState({
-                product: { id: '', name: '', type: '', price: 0, quantity: 1, date: '' },
-                editClicked: false
+            axios.post('http://localhost:8081/app/v1/products/' , {
+                name: product.name,
+                type: product.type,
+                price: product.price,
+                quantity: product.quantity,
+                date: product.date,
+                userID: id
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                }
             })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            // product.id = Math.floor(Math.random() * 1000)
+            // product.isChecked = false
+            // store.dispatch(saveProduct(product))
+            // this.setState({
+            //     product: { id: '', name: '', type: '', price: 0, quantity: 1, date: '' },
+            //     editClicked: false
+            // })
         } else {
             this.setState({ error: true })
         }
@@ -93,7 +113,7 @@ class BudgetCalc extends React.Component {
         return (
             <main className="budget-calc-main">
                 {this.props.accountClicked ? <Account /> : null}
-                {this.props.signInClicked ? <SignIn /> : null}
+                {this.props.signInClicked && !this.props.isUserLogged ? <SignIn /> : null}
                 {this.props.addNewGroupClicked ? <NewGroup /> : null}
                 {this.state.error ? <Alert click={this.closeErrorAlert}
                     text="Please fill up every field!"
@@ -133,7 +153,8 @@ function mapStateToProps(state) {
         groups: state.productsReducer.productGroups,
         addNewGroupClicked: state.productsReducer.addNewGroupClicked,
         accountClicked: state.userReducer.accountClicked,
-        signInClicked: state.userReducer.signInClicked
+        signInClicked: state.userReducer.signInClicked,
+        isUserLogged: state.userReducer.isUserLogged
     }
 }
 

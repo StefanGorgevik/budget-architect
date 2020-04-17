@@ -38,13 +38,13 @@ class SignIn extends Component {
                 password: this.state.password
             })
                 .then(res => {
+                    this.setState({ error: false })
                     console.log(res)
-                    this.props.userLoggedIn(true)
-                    this.props.signInClickedAction(false)
                     localStorage.setItem('jwt', res.data.jwt)
                     localStorage.setItem('name', res.data.name)
                     localStorage.setItem('user-id', res.data.id)
-                    this.setState({ error: false })
+                    this.props.signInClickedAction(false)
+                    this.props.userLoggedIn(true)
                 })
                 .catch(err => {
                     console.log(err)
