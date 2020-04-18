@@ -5,7 +5,7 @@ import Selected from './Selected/Selected'
 import Button from '../Button/Button'
 import GroupsTable from './GroupsTable/GroupsTable'
 import store from '../../../redux/store'
-import { addNewGroupClicked, deleteGroup } from '../../../redux/actions/productsActions'
+import { addNewGroupClicked, deleteGroup } from '../../../redux/actions/groupsActions'
 import Alert from '../Alert/Alert'
 
 class Groups extends React.Component {
@@ -82,7 +82,7 @@ class Groups extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        groups: state.productReducer.productGroups
+        groups: state.groupsReducer.productGroups
     }
 }
 

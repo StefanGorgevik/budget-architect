@@ -6,8 +6,8 @@ const saveProduct = (req,res) => {
     const user = req.user;
     // usersModel.updateUser(user.id, {...user})
     productModel.saveProduct({...product, userID: user.id})
-    .then(() => {
-        res.status(201).send("Workout plan created!")
+    .then((data) => {
+        res.status(201).send(data)
     })
     .catch((err) => {
         res.status(500).send(err)
@@ -17,58 +17,37 @@ const saveProduct = (req,res) => {
 const getProducts = (req, res) => {
     productModel.getProducts(req.params.id)
         .then(data => {
-            console.log(data)
             res.status(200).send(data);
         })
         .catch(err => {
-            console.log(err)
-
             res.status(500).send(err);
         })
 }
 
+const deleteProduct = (req, res) => {
+    productModel.deleteProduct(req.params.id)
+    .then(() => {
+        res.status(204).send("Item deleted");
+    })
+    .catch((err) => {
+        res.status(500).send(err);
+    })
+}
 
-// const getWorkoutPlan = (req, res) => {
-//     planModel.getWorkoutPlan(req.params.id)
-//     .then((data) => {
-//         res.status(200).send(data)
-//     })
-//     .catch((err) => {
-//         res.status(500).send(err)
-//     })
-// }
-
-// const updateWorkoutPlan = (req, res) => {
-//     planModel.updateWorkoutPlan(req.params.id, req.user.id, req.body)
-//     .then((data) => {
-//         res.status(201).send(data)
-//     })
-//     .catch((err) => {
-//         res.status(500).send(err)
-//     })
-// }
-
-// const getDiet = (req, res) => {
-//     planModel.getDiet(req.params.id)
-//     .then((data) => {
-//         res.status(200).send(data)
-//     })
-//     .catch((err) => {
-//         res.status(500).send(err)
-//     })
-// }
-
-// const updateDiet = (req, res) => {
-//     planModel.updateDiet(req.params.id, req.user.id, req.body)
-//     .then((data) => {
-//         res.status(201).send(data)
-//     })
-//     .catch((err) => {
-//         res.status(500).send(err)
-//     })
-// }
+const updateProduct = (req, res) => {
+    var newProduct = req.body;
+    productModel.updateProduct(req.params.id, newProduct)
+        .then(() => {
+            res.status(201).send('Item updated!');
+        })
+        .catch((err) => {
+            res.status(500).send(err)
+        })
+}
 
 module.exports = {
     saveProduct,
-    getProducts
+    getProducts,
+    deleteProduct,
+    updateProduct
 }

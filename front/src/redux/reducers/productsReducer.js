@@ -10,40 +10,31 @@ export function productsReducer(state = initState, action) {
         case "GET_PRODUCTS": {
             return { ...state, products: action.payload }
         }
+        case "SAVE_PRODUCT": {
+            return { ...state, products: [...state.products, action.payload] }
+        }
+        case "PRODUCT_TO_EDIT": {
+            return {
+                ...state, productToEdit: action.payload
+            }
+        }
         case "EDIT_PRODUCT": {
             return {
-                ...state, products: state.products.filter(prod =>
-                    prod.id !== action.payload.id), productToEdit: action.payload
+                ...state, products: state.products.map((prod) => {
+                    if(prod._id === action.payload._id) {
+                        return {
+                            ...prod,
+                            ...action.payload
+                        }
+                    } else {
+                        return prod
+                    }
+                })
             }
         }
-        case "HANDLE_IS_CHECKED": {
+        case "DELETE_PRODUCT": {
             return {
-                ...state, products: state.products.map((prod, i) => prod.name === action.val ? { ...prod, isChecked: action.checked } : prod)
-            }
-        }
-        case "DELETE_PRODUCTS": {
-            return {
-                ...state, products: state.products.filter(prod => { return !prod.isChecked }
-                )
-            }
-        }
-        case "ADD_NEW_GROUP_CLICKED": {
-            return { ...state, addNewGroupClicked: action.payload }
-        }
-        case "CHANGE_MODE": {
-            return { ...state, mode: action.payload }
-        }
-        case "SAVE_GROUP": {
-            return { ...state, productGroups: [...state.productGroups, action.payload] }
-        }
-        case "DELETE_GROUP": {
-            return { ...state, productGroups: state.productGroups.filter(group => group.id !== action.payload.id) }
-        }
-        case "SORT_GROUPS": {
-            let val = action.payload
-            return {
-                ...state, productGroups: [...state.productGroups].sort((a, b) =>
-                    (a[val] > b[val]) ? 1 : ((b[val] > a[val]) ? -1 : 0))
+                ...state, products: state.products.filter(prod => prod._id !== action.payload)
             }
         }
         case "SORT_PRODUCTS": {

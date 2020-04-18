@@ -22,8 +22,14 @@ app.use(
     )
 );
 
-app.get('/app/v1/products/get/:id', productHandler.getProducts)
-app.post('/app/v1/products/', productHandler.saveProduct)
+const url = '/app/v1/products/'
+
+app.get(url + 'get/:id', productHandler.getProducts)
+app.post(url, productHandler.saveProduct)
+app.delete(url + ':id', productHandler.deleteProduct);
+app.put(url + ':id', productHandler.updateProduct);
+
+
 
 app.listen(8081, (err) => {
     if(err) {

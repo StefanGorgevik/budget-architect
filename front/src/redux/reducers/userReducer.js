@@ -1,7 +1,7 @@
 const initState = {
-    signInClicked: true,
+    signInClicked: false,
     accountClicked: false,
-    isUserLogged: false,
+    signOutClicked: false,
     userToEdit: {}
 }
 
@@ -11,13 +11,13 @@ export function userReducer(state = initState, action) {
             return {
                 ...state,  signInClicked: action.payload}
         }
+        case "SIGN_OUT_CLICKED": {
+            return {
+                ...state,  signOutClicked: action.payload}
+        }
         case "ACCOUNT_CLICKED": {
             return {
                 ...state,  accountClicked: action.payload}
-        }
-        case "USER_LOGGED_IN": {
-            return {
-                ...state,  isUserLogged: action.payload}
         }
         case "EDIT_USER_INFO": {
             return {

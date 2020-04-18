@@ -5,10 +5,11 @@ import EmailInput from '../Inputs/EmailInput/EmailInput'
 import PasswordInput from '../Inputs/PasswordInput/PasswordInput'
 import NumberInput from '../Inputs/NumberInput/NumberInput'
 import Button from '../Button/Button'
-import { accountClickedAction, signInClickedAction, userLoggedIn } from '../../../redux/actions/userActions'
+import { accountClickedAction, signInClickedAction } from '../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import Alert from '../Alert/Alert'
+const URL = 'http://localhost:8080/'
 
 class Account extends Component {
     constructor(props) {
@@ -28,24 +29,24 @@ class Account extends Component {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
         })
-        .then(res => {
-            console.log(res.data[0])
-            this.setState({
-                name: res.data[0].name,
-                income: res.data[0].income,
-                email: res.data[0].email,
-                password: res.data[0].password
+            .then(res => {
+                console.log(res.data[0])
+                this.setState({
+                    name: res.data[0].name,
+                    income: res.data[0].income,
+                    email: res.data[0].email,
+                    password: res.data[0].password
+                })
+
             })
-            
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     componentDidMount() {
-        if(this.props.isUserLogged) {
-            this.getUserToEdit()            
+        if (this.props.isUserLogged) {
+            this.getUserToEdit()
         }
     }
 
@@ -59,44 +60,42 @@ class Account extends Component {
 
     registerUserHandler = (e) => {
         e.preventDefault()
-        if (this.state.name === '' || this.state.income === 0 || this.state.email === '' || this.state.password === '') {
-            this.setState({ error: true })
-        } else { 
-        axios.post('http://localhost:8080/app/v1/auth/register', {
-            name: this.state.name,
-            income: this.state.income,
-            email: this.state.email,
-            password: this.state.password
-        })
-            .then(res => {                
-                axios.post('http://localhost:8080/app/v1/auth/login', {
+        if (this.state.name !== '' && this.state.income !== 0 && this.state.email !== '' && this.state.password !== '') {
+            axios.post(URL + 'app/v1/auth/register', {
+                name: this.state.name,
+                income: this.state.income,
                 email: this.state.email,
                 password: this.state.password
             })
                 .then(res => {
-                    console.log(res)
-                    this.props.userLoggedIn(true)
-                    this.props.signInClickedAction(false)
-                    this.props.accountClickedAction(false)
-                    localStorage.setItem('jwt', res.data.jwt)
-                    localStorage.setItem('name', res.data.name)
-                    localStorage.setItem('user-id', res.data.id)
-                    this.setState({ error: false })
+                    axios.post(URL + 'app/v1/auth/login', {
+                        email: this.state.email,
+                        password: this.state.password
+                    })
+                        .then(res => {
+                            this.setState({ error: false })
+                            console.log(res)
+                            localStorage.setItem('jwt', res.data.jwt)
+                            localStorage.setItem('name', res.data.name)
+                            localStorage.setItem('user-id', res.data.id)
+                            localStorage.setItem('userLogged', 'true')
+                            this.props.signInClickedAction(false)
+                            window.location.reload()
+                        })
+                        .catch(err => {
+                            this.setState({ error: true })
+                        })
                 })
                 .catch(err => {
                     console.log(err)
-                    this.setState({ error: true })
-                    this.props.userLoggedIn(false)
                 })
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        } else {
+            this.setState({ error: true })
         }
     }
 
     closeErrorAlert = () => {
-        this.setState({ error: false})
+        this.setState({ error: false })
     }
 
     choseSignInHandler = () => {
@@ -105,11 +104,12 @@ class Account extends Component {
     }
 
     render() {
+        var isUserLogged = localStorage.getItem('userLogged')
         return (
             <main className="account-main">
-                {this.state.error ? <Alert accept={this.closeErrorAlert} text="Please fill up every field!" show={false}/> : null}
+                {this.state.error ? <Alert accept={this.closeErrorAlert} text="Please fill up every field!" show={false} /> : null}
                 <div className="account-div">
-                    <h1>{this.props.isUserLogged ? "Account" : 'Register'}</h1>
+                    <h1>{isUserLogged ? "Account" : 'Register'}</h1>
                     <TextInput saveValue={this.saveInputValue} id="name"
                         label='full name' placeholder="full name"
                         value={this.state.name} />
@@ -119,38 +119,37 @@ class Account extends Component {
                     <EmailInput saveValue={this.saveInputValue}
                         id="email" label='email' placeholder="email"
                         value={this.state.email} />
-                    <PasswordInput saveValue={this.saveInputValue}
-                        id="password" label='password' placeholder="password"
-                        value={this.state.password} />
+                    {!isUserLogged ?
+                        <PasswordInput saveValue={this.saveInputValue}
+                            id="password" label='password' placeholder="password"
+                            value={this.state.password} /> :
+                        <p className="change-pw-p">Change password</p>}
                     <div className="btns-div">
                         <Button click={this.closeAccountHandler}
                             content='Close'
                             name='ng-btn' />
                         <Button click={this.registerUserHandler}
-                            content={this.props.isUserLogged ? "Edit" : 'Register'}
+                            content={isUserLogged ? "Edit" : 'Register'}
                             name='ng-btn' />
                     </div>
-                    <p className="no-acc-p">To sign in, click 
+                    <p className="no-acc-p">To sign in, click
                         <span onClick={this.choseSignInHandler} className="here-span">here</span>
-                        </p>
+                    </p>
                 </div>
             </main>
         )
-    } 
+    }
 }
 
 function mapStateToProps(state) {
-    console.log(state.userReducer.userToEdit)
     return {
-      isUserLogged: state.userReducer.isUserLogged,
-      userToEdit: state.userReducer.userToEdit
+        userToEdit: state.userReducer.userToEdit
     }
 }
 function mapDispatchToProps(dispatch) {
     return {
         accountClickedAction: (bool) => dispatch(accountClickedAction(bool)),
-        signInClickedAction: (bool) => dispatch(signInClickedAction(bool)),
-        userLoggedIn: (bool) => dispatch(userLoggedIn(bool))
+        signInClickedAction: (bool) => dispatch(signInClickedAction(bool))
     }
 }
 

@@ -11,9 +11,9 @@ export function signInClickedAction(bool) {
     }
 }
 
-export function userLoggedIn(bool) {
+export function signOutClickedAction(bool) {
     return {
-        type: "USER_LOGGED_IN",
+        type: "SIGN_OUT_CLICKED",
         payload: bool
     }
 }

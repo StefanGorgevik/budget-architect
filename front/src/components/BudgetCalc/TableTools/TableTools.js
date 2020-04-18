@@ -1,9 +1,8 @@
 import React from 'react'
 import './TableTools.css'
-import store from '../../../redux/store'
-import { addNewGroupClicked, changeMode, deleteProducts } from '../../../redux/actions/productsActions'
+import { addNewGroupClicked, changeMode } from '../../../redux/actions/groupsActions'
 import ToolsContent from './ToolsContent/ToolsContent'
-import Alert from '../Alert/Alert'
+import {connect} from 'react-redux'
 
 class TableTools extends React.Component {
     constructor(props) {
@@ -11,8 +10,7 @@ class TableTools extends React.Component {
         this.state = {
             hovered: false,
             sorts: ["name", "type", "price", "quantity", "date"],
-            addNewGroupClicked: false,
-            deleteProducts: false
+            addNewGroupClicked: false
         }
     }
 
@@ -29,32 +27,17 @@ class TableTools extends React.Component {
     }   
 
     addNewGroupHandler = () => {
-        store.dispatch(addNewGroupClicked(!this.state.addNewGroupClicked))
-        store.dispatch(changeMode('groups'))
+        this.props.addNewGroupClicked(!this.state.addNewGroupClicked)
+        this.props.changeMode('groups')
     }
 
     selectModeHandler = (event) => {
-        store.dispatch(changeMode(event.target.value))
-    }
-
-    deleteProductsClicked = () => {
-        this.setState({ deleteProducts: true })
-    }
-
-    deleteProducts = () => {
-        store.dispatch(deleteProducts())
-        this.setState({ deleteProducts: false })
-    }
-    
-    closeAlert = () => {
-        this.setState({ deleteProducts: false })
+        this.props.changeMode(event.target.value)
     }
 
     render() {
         return (
             <>
-                {this.state.deleteProducts ? <Alert accept={this.deleteProducts} decline={this.closeAlert}
-                    text="You are about to delete several items. Are you sure?" /> : null}
                 <div className={this.state.hovered ? "table-tools-div table-tools-div-active" : "table-tools-div"}
                     onMouseEnter={this.handleHover}
                     onMouseLeave={this.handleHoverLeave} >
@@ -81,5 +64,12 @@ class TableTools extends React.Component {
     }
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+        addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
+        changeMode: (mode) => dispatch(changeMode(mode))
+    }
+}
 
-export default TableTools;
+
+export default connect(null, mapDispatchToProps)(TableTools);

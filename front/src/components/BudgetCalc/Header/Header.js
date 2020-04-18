@@ -1,6 +1,6 @@
 import React from 'react'
 import './Header.css'
-import {accountClickedAction, signInClickedAction} from '../../../redux/actions/userActions'
+import {accountClickedAction, signInClickedAction, signOutClickedAction} from '../../../redux/actions/userActions'
 import {connect} from 'react-redux'
 
 function Header(props) {
@@ -10,28 +10,30 @@ function Header(props) {
     const signInClickedHandler = () => {
         props.signInClickedAction(true)
     }
+    const signOutHandler = () => {
+       props.signOutClickedAction(true)
+    }
+
+    var isUserLogged = localStorage.getItem('userLogged') === 'true'
 
     return (
         <nav className="header-main">
             <h1 className="header-title">Budget Architect</h1>
             <ul className="header-ul">
-                <li onClick={accountClickedHandler}>{props.isUserLogged ? "Account" : "Register"}</li>
-                <li onClick={signInClickedHandler}>{props.isUserLogged ? "Sign Out" : "Sign In"}</li>
+                <li onClick={accountClickedHandler}>{isUserLogged ? "Account" : "Register"}</li>
+                <li onClick={isUserLogged ? signOutHandler : signInClickedHandler}>{isUserLogged ? "Sign Out" : "Sign In"}</li>
             </ul>
         </nav>
     )
 }
 
-function mapStateToProps(state) {
-    return {
-        isUserLogged: state.userReducer.isUserLogged
-    }
-}
+
 function mapDispatchToProps(dispatch) {
     return {
         accountClickedAction: (bool) => dispatch(accountClickedAction(bool)),
-        signInClickedAction: (bool) => dispatch(signInClickedAction(bool))
+        signInClickedAction: (bool) => dispatch(signInClickedAction(bool)),
+        signOutClickedAction: (bool) => dispatch(signOutClickedAction(bool))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(null, mapDispatchToProps)(Header);

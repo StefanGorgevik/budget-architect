@@ -1,23 +1,25 @@
 import React from 'react'
 import './BudgetCalc.css'
-import ProductInputs from '../../components/BudgetCalc/Inputs/ProductInputs/ProductInputs'
+import ProductInputs from '../../components/BudgetCalc/ProductInputs/ProductInputs'
 import TableTools from '../../components/BudgetCalc/TableTools/TableTools'
 import Table from '../../components/BudgetCalc/BudgetTable/Table/Table'
 import Groups from '../../components/BudgetCalc/Groups/Groups'
 import { connect } from 'react-redux'
-import store from '../../redux/store'
-import { sortGroups, sortProducts, editProduct, handleIsChecked } from '../../redux/actions/productsActions'
+import { signOutClickedAction } from '../../redux/actions/userActions'
+import { sortProducts, productToEdit, saveProduct, editProduct } from '../../redux/actions/productsActions'
+import { sortGroups } from '../../redux/actions/groupsActions'
 import Alert from '../../components/BudgetCalc/Alert/Alert'
 import NewGroup from '../../components/BudgetCalc/NewGroupForm/NewGroup/NewGroup'
 import Account from '../../components/BudgetCalc/Account/Account'
 import SignIn from '../../components/BudgetCalc/SignIn/SignIn'
 import axios from 'axios'
+const URL = 'http://localhost:8081/'
+
 class BudgetCalc extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             product: {
-                id: '',
                 name: '',
                 type: '',
                 price: 0,
@@ -25,41 +27,24 @@ class BudgetCalc extends React.Component {
                 date: ''
             },
             products: props.products,
-            isChecked: false,
             productsToDelete: [],
             editClicked: false,
             selectedValue: 'name',
-            error: false
+            error: false,
+            prodToEditID: ''
         }
-    }
-
-    componentDidMount() {
-        if(this.state.isUserLogged) {
-            var id = localStorage.getItem('user-id')
-            axios.get(`http://localhost:8081/app/v1/products${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-                }
-            })
-                .then((res) => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            }
     }
 
     handleInputValue = (event) => {
         this.setState({ ...this.state, product: { ...this.state.product, [event.target.id]: event.target.value } })
     }
 
-    saveProduct = (e) => {
+    saveProductHandler = (e) => {
         var product = this.state.product
         var id = localStorage.getItem('user-id')
         e.preventDefault()
         if (product.name !== '' && product.type !== '' && product.price !== 0 && product.quantity >= 1 && product.date !== '') {
-            axios.post('http://localhost:8081/app/v1/products/', {
+            axios.post(URL + 'app/v1/products/', {
                 name: product.name,
                 type: product.type,
                 price: product.price,
@@ -72,18 +57,15 @@ class BudgetCalc extends React.Component {
                 }
             })
                 .then(res => {
-                    console.log(res)
+                    this.props.saveProduct(res.data)
+                    this.setState({
+                        product: { name: '', type: '', price: 0, quantity: 1, date: '' },
+                        editClicked: false
+                    })
                 })
                 .catch(err => {
                     console.log(err)
                 })
-            // product.id = Math.floor(Math.random() * 1000)
-            // product.isChecked = false
-            // store.dispatch(saveProduct(product))
-            // this.setState({
-            //     product: { id: '', name: '', type: '', price: 0, quantity: 1, date: '' },
-            //     editClicked: false
-            // })
         } else {
             this.setState({ error: true })
         }
@@ -93,27 +75,65 @@ class BudgetCalc extends React.Component {
         this.setState({ error: false })
     }
 
-    handleCheckboxChange = (e) => {
-        let val = e.target.value
-        let checked = e.target.checked
-        store.dispatch(handleIsChecked(val, checked))
-    }
-
-    productToEdit = (prod) => {
-        store.dispatch(editProduct(prod))
+    productToEditHandler = (prod) => {
+        this.props.productToEdit(prod)
         this.setState({
             editClicked: true,
-            product: prod
+            product: prod,
+            prodToEditID: prod._id
         })
+    }
+
+    editProductHandler = (event) => {
+        var prodID = this.state.prodToEditID
+        var product = this.state.product
+        var userID = localStorage.getItem('user-id')
+        event.preventDefault()
+        if (product.name !== '' && product.type !== '' && product.price !== 0 && product.quantity >= 1 && product.date !== '') {
+            axios.put(URL + `app/v1/products/${prodID}`,
+                {
+                    name: product.name,
+                    type: product.type,
+                    price: product.price,
+                    quantity: product.quantity,
+                    date: product.date,
+                    userID: userID
+                }, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                }
+            })
+                .then(res => {
+                    this.setState({
+                        editClicked: false,
+                        error: false,
+                        product: { name: '', type: '', price: 0, quantity: 1, date: '' }
+                    })
+                    this.props.editProduct(product)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } else {
+            this.setState({ error: true })
+        }
     }
 
     selectFilterHandler = (e) => {
         var val = e.target.value
         if (this.props.mode === 'products') {
-            store.dispatch(sortProducts(val))
+            this.props.sortProducts(val)
         } else {
-            store.dispatch(sortGroups(val))
+            this.props.sortGroups(val)
         }
+    }
+
+    signOutHandler = () => {
+        localStorage.clear()
+        window.location.reload();
+    }
+    declineSignOutHandler = () => {
+        this.props.signOutClickedAction(false)
     }
 
     render() {
@@ -127,41 +147,48 @@ class BudgetCalc extends React.Component {
                 }
             }
         }
+
+        var isUserLogged = localStorage.getItem('userLogged') === 'true'
         return (
             <main className="budget-calc-main">
                 {this.props.accountClicked ? <Account /> : null}
                 {this.props.signInClicked && !this.props.isUserLogged ? <SignIn /> : null}
                 {this.props.addNewGroupClicked ? <NewGroup /> : null}
-                {this.state.error ? <Alert click={this.closeErrorAlert}
+                {this.state.error ? <Alert accept={this.closeErrorAlert}
                     text="Please fill up every field!"
                 /> : null}
-
-                {this.props.isUserLogged ?
-                    <>
-                        {this.props.mode === "products" ?
-                            <ProductInputs saveProduct={this.saveProduct}
-                                handleInputValue={this.handleInputValue}
-                                product={this.state.product}
-                                editClicked={this.state.editClicked}
-                                editProduct={this.editProduct}
-                                types={this.state.types}
-                            /> : null}
-                        <div className="budget-calc-content-div">
-                            {this.props.mode === "products" ?
-                                <Table
-                                    properties={this.state.properties}
-                                    products={this.props.products}
-                                    productToEdit={this.productToEdit}
-                                    handleCheckboxChange={this.handleCheckboxChange}
-                                    editClicked={this.state.editClicked}
-                                    totalPrice={totPrice}
-                                /> : <Groups />}
-                            <TableTools
-                                deleteProducts={this.deleteProducts}
-                                selectFilterHandler={this.selectFilterHandler}
-                            />
-                        </div>
-                    </> : null}
+                {this.props.signOutClicked ? <Alert accept={this.signOutHandler} decline={this.declineSignOutHandler}
+                    text="Your are about to sign out! Are you sure?" show={true}
+                /> : null}
+                {isUserLogged ? <> 
+                {this.props.mode === "products" ? 
+                    <ProductInputs
+                        handleInputValue={this.handleInputValue}
+                        product={this.state.product}
+                        editClicked={this.state.editClicked}
+                        editProduct={this.editProductHandler}
+                        saveProduct={this.saveProductHandler}
+                        types={this.state.types}
+                    /> : null}
+                <div className="budget-calc-content-div">
+                    {this.props.mode === "products" ?
+                        <Table
+                            properties={this.state.properties}
+                            products={this.props.products}
+                            productToEdit={this.productToEditHandler}
+                            handleCheckboxChange={this.handleCheckboxChange}
+                            editClicked={this.state.editClicked}
+                            totalPrice={totPrice}
+                        /> : <Groups />}
+                    <TableTools
+                        deleteProducts={this.deleteProducts}
+                        selectFilterHandler={this.selectFilterHandler}
+                    />
+                </div>
+                </> : 
+                <div>
+                <h1 className="welcome-h1">Please sign in or register!</h1>
+                </div>}
             </main>
         )
     }
@@ -175,8 +202,19 @@ function mapStateToProps(state) {
         addNewGroupClicked: state.productsReducer.addNewGroupClicked,
         accountClicked: state.userReducer.accountClicked,
         signInClicked: state.userReducer.signInClicked,
-        isUserLogged: state.userReducer.isUserLogged
+        signOutClicked: state.userReducer.signOutClicked
     }
 }
 
-export default connect(mapStateToProps)(BudgetCalc)
+function mapDispatchToProps(dispatch) {
+    return {
+        saveProduct: (prod) => dispatch(saveProduct(prod)),
+        productToEdit: (id) => dispatch(productToEdit(id)),
+        editProduct: (prod) => dispatch(editProduct(prod)),
+        sortProducts: (val) => dispatch(sortProducts(val)),
+        sortGroups: (val) => dispatch(sortGroups(val)),
+        signOutClickedAction: (bool) => dispatch(signOutClickedAction(bool))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetCalc)

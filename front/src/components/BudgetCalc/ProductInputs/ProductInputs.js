@@ -1,10 +1,10 @@
 import React from 'react'
 import './ProductInputs.css'
 import { connect } from 'react-redux'
-import TextInput from '../TextInput/TextInput'
-import DateInput from '../DateInput/DateInput'
-import NumberInput from '../NumberInput/NumberInput'
-import Button from '../../Button/Button'
+import TextInput from '../Inputs/TextInput/TextInput'
+import DateInput from '../Inputs/DateInput/DateInput'
+import NumberInput from '../Inputs/NumberInput/NumberInput'
+import Button from '../Button/Button'
 
 function Inputs(props) {
     return (
@@ -44,9 +44,13 @@ function Inputs(props) {
                     value={props.product.quantity}
                 />
             </div>
-            <Button click={props.saveProduct}
-                content={props.editClicked ? "Save" : "Submit"}
-                name='products-submit-btn' />
+            {!props.editClicked ?
+                <Button click={props.saveProduct}
+                    content="Submit"
+                    name='products-submit-btn' /> :
+                <Button click={props.editProduct}
+                    content="Save"
+                    name='products-submit-btn' />}
         </form>
     )
 }

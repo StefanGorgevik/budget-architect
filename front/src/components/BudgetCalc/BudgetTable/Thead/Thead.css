@@ -1,6 +1,6 @@
 .top-table {
     display: flex;
-    width: 95%;
+    width: 100%;
     margin-left: 30px;
     border-bottom: 1px solid white;
     font-size: 55px;
@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    width: 100%;
+    width: 80%;
     height: 50px;
 }
 .top-table ul li{
@@ -26,9 +26,9 @@
 }
 
 .top-table ul #price-li {
-    margin-left: 25px;
-    margin-right: 20px;
-    padding-right:70px;
+    margin-left: 30px;
+    margin-right: 15px;
+    padding-right:40px;
     min-width: 12%;
 }
 .top-table ul #name-li {

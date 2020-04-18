@@ -31,13 +31,36 @@ const getProducts = (id) => {
                console.log(err)
                return fail;
            }
-           console.log(data)
            return success(data)
        })
     })
 }
 
+const deleteProduct = (id) => {
+    return new Promise((success,fail) => {
+        Product.deleteOne({_id: id}, err => {
+            if(err) {
+                return fail(err);
+            }
+            return success();
+        })
+    })
+}
+
+const updateProduct = (id, data) => {
+    return new Promise((success, fail) => {
+        Product.updateOne({ _id: id }, data, err => {
+            if (err) {
+                return fail(err)
+            }
+            return success(data)
+        })
+    })
+}
+
 module.exports = {
     saveProduct,
-    getProducts
+    getProducts,
+    deleteProduct,
+    updateProduct
 }

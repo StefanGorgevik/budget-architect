@@ -13,10 +13,6 @@ function ToolsContent(props) {
                 <SelectSort selectFilterHandler={props.selectFilterHandler}
                     sorts={props.sorts} />
             </div>
-            <Button click={props.deleteProductsClicked}
-                content='Delete selected items'
-                name='table-tools-btn'
-            />
             <Button click={props.addNewGroupHandler}
                 content='Add a new group of products'
                 name='table-tools-btn' />

@@ -14,7 +14,6 @@ function PasswordInput(props) {
                 id={props.id}
                 value={props.value}
                 placeholder={props.placeholder}
-
             />
         </div>
     )

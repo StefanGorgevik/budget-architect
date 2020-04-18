@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import { signInClickedAction, accountClickedAction, userLoggedIn } from '../../../redux/actions/userActions'
-
+import { signInClickedAction, accountClickedAction } from '../../../redux/actions/userActions'
 import './SignIn.css'
-
 import Button from '../Button/Button'
 import EmailInput from '../Inputs/EmailInput/EmailInput'
 import PasswordInput from '../Inputs/PasswordInput/PasswordInput'
 import Alert from '../Alert/Alert'
+const URL = 'http://localhost:8080/'
 
 class SignIn extends Component {
     constructor(props) {
@@ -28,12 +27,11 @@ class SignIn extends Component {
         this.props.signInClickedAction(false)
     }
 
-    signInHandler = (e) => {
-        e.preventDefault()
+    signInHandler = () => {
         if (this.state.email === '' || this.state.password === '') {
             this.setState({ error: true })
         } else {
-            axios.post('http://localhost:8080/app/v1/auth/login', {
+            axios.post(URL + 'app/v1/auth/login', {
                 email: this.state.email,
                 password: this.state.password
             })
@@ -43,8 +41,9 @@ class SignIn extends Component {
                     localStorage.setItem('jwt', res.data.jwt)
                     localStorage.setItem('name', res.data.name)
                     localStorage.setItem('user-id', res.data.id)
+                    localStorage.setItem('userLogged', 'true')
                     this.props.signInClickedAction(false)
-                    this.props.userLoggedIn(true)
+                    window.location.reload()
                 })
                 .catch(err => {
                     console.log(err)
@@ -94,9 +93,7 @@ class SignIn extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         signInClickedAction: (bool) => dispatch(signInClickedAction(bool)),
-        accountClickedAction: (bool) => dispatch(accountClickedAction(bool)),
-        userLoggedIn: (bool) => dispatch(userLoggedIn(bool))
-
+        accountClickedAction: (bool) => dispatch(accountClickedAction(bool))
     }
 }
 
