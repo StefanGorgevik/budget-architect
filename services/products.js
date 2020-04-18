@@ -24,7 +24,7 @@ app.use(
 
 const url = '/app/v1/products/'
 
-app.get(url + 'get/:id', productHandler.getProducts)
+app.get(url + 'get/', productHandler.getProducts)
 app.post(url, productHandler.saveProduct)
 app.delete(url + ':id', productHandler.deleteProduct);
 app.put(url + ':id', productHandler.updateProduct);

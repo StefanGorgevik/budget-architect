@@ -35,6 +35,10 @@ class BudgetCalc extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        localStorage.clear()
+    }
+
     handleInputValue = (event) => {
         this.setState({ ...this.state, product: { ...this.state.product, [event.target.id]: event.target.value } })
     }

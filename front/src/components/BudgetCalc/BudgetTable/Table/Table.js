@@ -14,12 +14,26 @@ class Table extends React.Component {
         this.state = {
             products: [],
             deleteProductClicked: false,
-            productToDelete: ''
+            productToDelete: '',
+            selectedMonth: new Date().getMonth(),
+            selectedYear: '2020'
         }
     }
     componentDidMount() {
-        var id = localStorage.getItem('user-id')
-        axios.get(`http://localhost:8081/app/v1/products/get/${id}`, {
+        this.getProductsHandler()
+    }
+
+    getProductsHandler = () => {
+        var month;
+        if(this.state.selectedMonth < 10) {
+            month = parseInt(this.state.selectedMonth) + 1
+                month = "0" + month.toString();
+        }
+        var year = this.state.selectedYear
+        console.log(year,month)
+        let dateFrom = new Date(`${Number(year)}-${month}-01 00:00:00.000`).getTime()
+        let dateTo = new Date(`${Number(year)}-${month}-31 23:59:59.000`).getTime()
+        axios.get(`http://localhost:8081/app/v1/products/get/?date_from=${dateFrom}&date_to=${dateTo}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
@@ -30,7 +44,7 @@ class Table extends React.Component {
             })
             .catch(error => {
                 console.log(error)
-                if(error.response.status === 401) {
+                if (error.response.status === 401) {
                     this.props.signInClickedAction(true)
                 }
             })
@@ -61,6 +75,14 @@ class Table extends React.Component {
         this.setState({ deleteProductClicked: false })
     }
 
+    selectMonthHandler = (event) => {
+        this.setState({ selectedMonth: event.target.value })
+    }
+
+    selectYearHandler = (event) => {
+        this.setState({ selectedYear: event.target.value })
+    }
+
     render() {
         var productsLengths = 0;
         if (this.props.products) {
@@ -74,6 +96,9 @@ class Table extends React.Component {
                 <TableInfo totalPrice={this.props.totalPrice}
                     productsLength={productsLengths}
                     selectModeHandler={this.props.selectModeHandler}
+                    selectMonth={this.selectMonthHandler}
+                    selectYear={this.selectYearHandler}
+                    selectedMonth={this.state.selectedMonth}
                 />
                 <Thead properties={this.props.properties} />
                 <div className="products-div">

@@ -15,11 +15,32 @@ const saveProduct = (req,res) => {
 }
 
 const getProducts = (req, res) => {
-    productModel.getProducts(req.params.id)
+    let q = {};
+    q.userID = req.user.id;
+    let sort = {};
+    console.log(req.query)
+    if(req.query.date_from != undefined) {
+        if(q.date == undefined){
+            q.date = {};
+        }
+        q.date.$gte = new Date(Number(req.query.date_from));
+    }
+
+    if(req.query.date_to != undefined) {
+        if(q.date == undefined){
+            q.date = {};
+        }
+        q.date.$lte = new Date(Number(req.query.date_to));
+    }
+
+    
+    productModel.getProducts(q, sort)
         .then(data => {
+            console.log(data)
             res.status(200).send(data);
         })
         .catch(err => {
+            console.log(err)
             res.status(500).send(err);
         })
 }
