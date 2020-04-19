@@ -11,7 +11,7 @@ function Inputs(props) {
         <form className="ng-form" onSubmit={props.addProductToGroup}>
             <div className="ng-date-div">
                 <DateInput saveValue={props.handleGroupDateInputValue}
-                    id="date" label='date' />
+                    id="date" label='date' value={props.dateValue} />
             </div>
             <TextInput saveValue={props.handleProductInputValue} id="name"
                         label='name' placeholder="Product name"

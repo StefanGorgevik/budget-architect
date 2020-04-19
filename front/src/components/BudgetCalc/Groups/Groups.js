@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import Selected from './Selected/Selected'
 import Button from '../Button/Button'
 import GroupsTable from './GroupsTable/GroupsTable'
-import store from '../../../redux/store'
 import { addNewGroupClicked, deleteGroup } from '../../../redux/actions/groupsActions'
 import Alert from '../Alert/Alert'
-
+import axios from 'axios'
+const URL = 'http://localhost:8082/'
 class Groups extends React.Component {
     constructor(props) {
         super(props)
@@ -24,20 +24,30 @@ class Groups extends React.Component {
     }
 
     addNewGroupHandler = () => {
-        store.dispatch(addNewGroupClicked(!this.state.addNewGroupClicked))
+        this.props.addNewGroupClicked(!this.state.addNewGroupClicked)
     }
 
     deleteGroupHandler = (group) => {
-        this.setState({groupToDelete: group, deleteClicked: true })
+        this.setState({ groupToDelete: group, deleteClicked: true })
     }
 
     acceptDelete = () => {
-        store.dispatch(deleteGroup(this.state.groupToDelete))
-        this.setState({deleteClicked: false})
+        axios.delete(`${URL}app/v1/groups/${this.state.groupToDelete._id}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+            }
+        })
+            .then(res => {
+                this.props.deleteGroup(this.state.groupToDelete)
+                this.setState({ deleteClicked: false })
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     closeAlert = () => {
-        this.setState({deleteClicked: false})
+        this.setState({ deleteClicked: false })
     }
 
     render() {
@@ -52,8 +62,8 @@ class Groups extends React.Component {
         }
         return (
             <main className="groups-main">
-                {this.state.deleteClicked ? <Alert accept={this.acceptDelete} decline={this.closeAlert} 
-                     text="You are about to delete a group of products. Are you sure?"
+                {this.state.deleteClicked ? <Alert accept={this.acceptDelete} decline={this.closeAlert}
+                    text="You are about to delete a group of products. Are you sure?"
                 /> : null}
                 <h1>Groups</h1>
                 <div className="groups-content">
@@ -86,4 +96,11 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Groups)
+function mapDispatchToProps(dispatch) {
+    return {
+        addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
+        deleteGroup: (group) => dispatch(deleteGroup(group))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Groups)

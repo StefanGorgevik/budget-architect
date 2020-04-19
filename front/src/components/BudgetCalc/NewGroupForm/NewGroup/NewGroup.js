@@ -3,9 +3,11 @@ import './NewGroup.css'
 import Inputs from '../Inputs-NG/Inputs'
 import Table from '../Table-NG/Table'
 import Button from '../../Button/Button'
-import store from '../../../../redux/store'
 import { addNewGroupClicked, saveGroup } from '../../../../redux/actions/groupsActions'
 import Alert from '../../Alert/Alert'
+import axios from 'axios'
+import {connect} from 'react-redux'
+const URL = 'http://localhost:8082/'
 
 class NewGroup extends React.Component {
     constructor(props) {
@@ -77,22 +79,32 @@ class NewGroup extends React.Component {
         if (this.state.date !== '') {
             var products = this.state.newGroupProducts
             var totalPrice = this.getTotalPrice(products);
-            const productGroup = {
-                id: Math.floor(Math.random() * 1000),
-                groupDate: this.state.date,
-                groupTotalPrice: totalPrice,
+            axios.post(URL + `app/v1/groups/`, {
+                date: this.state.date,
+                totalPrice: totalPrice,
+                userID: localStorage.getItem('user-id'),
                 products: this.state.newGroupProducts
-            }
-            this.setState({ newGroupProducts: [], date: '' })
-            store.dispatch(addNewGroupClicked(false))
-            store.dispatch(saveGroup(productGroup))
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                }
+            })
+            .then(res => {
+                this.props.saveGroup(res.data)
+                this.setState({ newGroupProducts: [], date: '' })
+                this.props.addNewGroupClicked(false)
+            })
+            .catch(err => {
+                console.log(err)
+            })
         } else {
             this.setState({ error: true })
         }
     }
 
     closeNewGroup = () => {
-        store.dispatch(addNewGroupClicked(false))
+        this.props.addNewGroupClicked(false)
     }
 
     render() {
@@ -107,7 +119,9 @@ class NewGroup extends React.Component {
                         <Inputs addProductToGroup={this.addProductToGroup}
                             handleGroupDateInputValue={this.handleGroupDateInputValue}
                             handleProductInputValue={this.handleProductInputValue}
-                            product={this.state.product} />
+                            product={this.state.product} 
+                                dateValue={this.state.date}
+                            />
                         <div className="ng-btns-div">
                             <Button click={this.closeNewGroup}
                                 content='Close'
@@ -130,6 +144,12 @@ class NewGroup extends React.Component {
     }
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+        addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
+        saveGroup: (data) => dispatch(saveGroup(data))
+    }
+}
 
 
-export default NewGroup; 
+export default connect(null, mapDispatchToProps)(NewGroup); 

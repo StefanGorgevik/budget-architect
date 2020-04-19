@@ -16,7 +16,7 @@ function SelectMode(props) {
 
 function mapStateToProps(state) {
     return {
-        mode: state.productsReducer.mode
+        mode: state.groupsReducer.mode
     }
 }
 

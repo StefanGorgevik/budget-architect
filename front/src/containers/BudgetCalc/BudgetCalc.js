@@ -26,8 +26,6 @@ class BudgetCalc extends React.Component {
                 quantity: 1,
                 date: ''
             },
-            products: props.products,
-            productsToDelete: [],
             editClicked: false,
             selectedValue: 'name',
             error: false,

@@ -12,7 +12,7 @@ function DateInput(props) {
                 className="inputs"
                 type='date'
                 id={props.id}
-                value={props.value.toString().slice(0, 10)}
+                value={props.value ? props.value.toString().slice(0, 10) : ''}
                 min="2020-01-01" max="2020-12-31"
             />
         </div>

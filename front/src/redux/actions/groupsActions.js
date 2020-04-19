@@ -1,9 +1,17 @@
+export function getGroupsAction(groups) {
+    return {
+        type: "GET_GROUPS",
+        payload: groups
+    }
+}
+
 export function addNewGroupClicked(clicked) {
     return {
         type: "ADD_NEW_GROUP_CLICKED",
         payload: clicked
     }
 }
+
 export function changeMode(mode) {
     return {
         type: "CHANGE_MODE",

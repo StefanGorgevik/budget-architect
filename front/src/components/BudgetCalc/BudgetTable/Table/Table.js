@@ -71,7 +71,7 @@ class Table extends React.Component {
     deleteProduct = () => {
         if (this.state.productToDelete) {
             var prodID = this.state.productToDelete
-            axios.delete(`http://localhost:8081/app/v1/products/${prodID}`,
+            axios.delete(`${URL}app/v1/products/${prodID}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('jwt')}`
