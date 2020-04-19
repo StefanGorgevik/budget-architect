@@ -2,18 +2,29 @@ import React from 'react'
 import './GroupsTable.css'
 import Button from '../../Button/Button'
 import {connect } from 'react-redux'
-import {getGroupsAction} from '../../../../redux/actions/groupsActions'
+import {getGroupsAction, isGroupSavedAction} from '../../../../redux/actions/groupsActions'
 import axios from 'axios'
 const URL = 'http://localhost:8082/'
 class GroupsTable extends React.Component {
+
+    componentDidUpdate() {
+        if(this.props.isGroupSaved) {
+            this.getAllGroupsHandler()
+            this.props.isGroupSavedAction(false)
+        }
+    }
+
     componentDidMount() {
+        this.getAllGroupsHandler()
+    }
+
+    getAllGroupsHandler = () => {
         axios.get(URL + 'app/v1/groups/get', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
         })
         .then(res => {
-            console.log(res)
             this.props.getGroupsAction(res.data)
         })
         .catch(err => {
@@ -64,12 +75,14 @@ class GroupsTable extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        groups: state.groupsReducer.groups
+        groups: state.groupsReducer.groups,
+        isGroupSaved: state.groupsReducer.isGroupSaved
     }
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getGroupsAction: (groups) => dispatch(getGroupsAction(groups))
+        getGroupsAction: (groups) => dispatch(getGroupsAction(groups)),
+        isGroupSavedAction: (bool) => dispatch(isGroupSavedAction(bool))
     }
 }
 

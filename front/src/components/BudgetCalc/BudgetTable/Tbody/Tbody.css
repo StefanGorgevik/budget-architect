@@ -1,12 +1,3 @@
-
-.budg-edit-btn:hover {
-    border-color: white;
-}
-.budg-edit-btn-disabled {
-    pointer-events: none;
-    color: grey;
-    border-color: grey;
-}
 .product-tr td{
     width: 200px;
     text-transform: capitalize;

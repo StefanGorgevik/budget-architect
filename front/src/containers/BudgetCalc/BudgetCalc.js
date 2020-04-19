@@ -6,7 +6,7 @@ import Table from '../../components/BudgetCalc/BudgetTable/Table/Table'
 import Groups from '../../components/BudgetCalc/Groups/Groups'
 import { connect } from 'react-redux'
 import { signOutClickedAction } from '../../redux/actions/userActions'
-import { sortProducts, productToEdit, saveProduct, editProduct } from '../../redux/actions/productsActions'
+import { sortProducts, productToEdit, saveProduct, editProduct, isProductSavedAction } from '../../redux/actions/productsActions'
 import { sortGroups } from '../../redux/actions/groupsActions'
 import Alert from '../../components/BudgetCalc/Alert/Alert'
 import NewGroup from '../../components/BudgetCalc/NewGroupForm/NewGroup/NewGroup'
@@ -60,6 +60,7 @@ class BudgetCalc extends React.Component {
             })
                 .then(res => {
                     this.props.saveProduct(res.data)
+                    this.props.isProductSavedAction(true)
                     this.setState({
                         product: { name: '', type: '', price: 0, quantity: 1, date: '' },
                         editClicked: false
@@ -203,7 +204,8 @@ function mapDispatchToProps(dispatch) {
         editProduct: (prod) => dispatch(editProduct(prod)),
         sortProducts: (val) => dispatch(sortProducts(val)),
         sortGroups: (val) => dispatch(sortGroups(val)),
-        signOutClickedAction: (bool) => dispatch(signOutClickedAction(bool))
+        signOutClickedAction: (bool) => dispatch(signOutClickedAction(bool)),
+        isProductSavedAction: (bool) => dispatch(isProductSavedAction(bool))
     }
 }
 

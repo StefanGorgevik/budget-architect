@@ -39,3 +39,10 @@ export function sortGroups(val) {
         payload: val
     }
 }
+
+export function isGroupSavedAction( bool) {
+    return {
+        type: "IS_GROUP_SAVED",
+        payload: bool
+    }
+}

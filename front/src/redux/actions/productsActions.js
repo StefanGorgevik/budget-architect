@@ -5,10 +5,16 @@ export function getProducts(products) {
     }
 }
 
-export function saveProduct(product) {
+export function saveProduct(product, ) {
     return {
         type: "SAVE_PRODUCT",
         payload: product
+    }
+}
+export function isProductSavedAction( bool) {
+    return {
+        type: "IS_PRODUCT_SAVED",
+        payload: bool
     }
 }
 

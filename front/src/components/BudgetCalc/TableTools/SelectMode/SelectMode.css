@@ -29,4 +29,5 @@
     padding: 10px 15px;
     font-family: 'Tomorrow', sans-serif;
     text-transform: capitalize;
+    cursor: pointer;
 }

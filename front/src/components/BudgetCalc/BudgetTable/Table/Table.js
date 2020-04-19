@@ -4,7 +4,7 @@ import Tbody from '../Tbody/Tbody'
 import Thead from '../Thead/Thead'
 import TableInfo from '../TableInfo/TableInfo'
 import axios from 'axios'
-import { getProducts, deleteProduct } from '../../../../redux/actions/productsActions'
+import { getProducts, deleteProduct, isProductSavedAction } from '../../../../redux/actions/productsActions'
 import { signInClickedAction } from '../../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import Alert from '../../Alert/Alert'
@@ -18,6 +18,13 @@ class Table extends React.Component {
             productToDelete: '',
             selectedMonth: 'default',
             selectedYear: '2020'
+        }
+    }
+    componentDidUpdate() {
+        if (this.props.isProductSaved) {
+            console.log(this.props.isProductSaved)
+            this.getAllProductsHandler()
+            this.props.isProductSavedAction(false)
         }
     }
     componentDidMount() {
@@ -153,12 +160,18 @@ class Table extends React.Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        isProductSaved: state.productsReducer.isProductSaved
+    }
+}
 function mapDispatchToProps(dispatch) {
     return {
         getProducts: (products) => dispatch(getProducts(products)),
         deleteProduct: (id) => dispatch(deleteProduct(id)),
-        signInClickedAction: (bool) => dispatch(signInClickedAction(bool))
+        signInClickedAction: (bool) => dispatch(signInClickedAction(bool)),
+        isProductSavedAction: (bool) => dispatch(isProductSavedAction(bool))
     }
 }
 
-export default connect(null, mapDispatchToProps)(Table)
+export default connect(mapStateToProps, mapDispatchToProps)(Table)

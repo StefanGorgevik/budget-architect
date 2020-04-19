@@ -42,10 +42,8 @@ function Table(props) {
 
 function mapStateToProps(state) {
     return {
-        mode: state.mode,
-        addNewGroupClicked: state.addNewGroupClicked,
-        productToEdit: state.productToEdit,
-        editGroupClicked: state.editGroupClicked
+        mode: state.groupsReducer.mode,
+        addNewGroupClicked: state.groupsReducer.addNewGroupClicked
     }
 }
 

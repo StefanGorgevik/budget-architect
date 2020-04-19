@@ -3,7 +3,7 @@ import './NewGroup.css'
 import Inputs from '../Inputs-NG/Inputs'
 import Table from '../Table-NG/Table'
 import Button from '../../Button/Button'
-import { addNewGroupClicked, saveGroup } from '../../../../redux/actions/groupsActions'
+import { addNewGroupClicked, saveGroup, isGroupSavedAction } from '../../../../redux/actions/groupsActions'
 import Alert from '../../Alert/Alert'
 import axios from 'axios'
 import {connect} from 'react-redux'
@@ -94,6 +94,7 @@ class NewGroup extends React.Component {
                 this.props.saveGroup(res.data)
                 this.setState({ newGroupProducts: [], date: '' })
                 this.props.addNewGroupClicked(false)
+                this.props.isGroupSavedAction(true)
             })
             .catch(err => {
                 console.log(err)
@@ -147,6 +148,7 @@ class NewGroup extends React.Component {
 function mapDispatchToProps(dispatch) {
     return {
         addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
+        isGroupSavedAction: (bool) => dispatch(isGroupSavedAction(bool)),
         saveGroup: (data) => dispatch(saveGroup(data))
     }
 }

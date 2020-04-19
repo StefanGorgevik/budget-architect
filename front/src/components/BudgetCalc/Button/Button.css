@@ -35,9 +35,9 @@
 }
 
 .budg-edit-btn-disabled {
-    pointer-events: none;
-    color: grey;
-    border-color: grey;
+    cursor: not-allowed !important;
+    color: grey !important;
+    border-color: grey !important;
 }
 
 .table-tools-btn {

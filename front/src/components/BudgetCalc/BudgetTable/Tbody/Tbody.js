@@ -17,12 +17,12 @@ function Tbody(props) {
                     <td id="edit-td">
                         <Button click={() => props.productToEdit(prod)}
                             content='Edit'
-                            name={props.editClicked ? "budg-edit-btn budg-edit-btn-disabled " : "budg-edit-btn"} />
+                            name={props.editClicked ? "budg-edit-btn budg-edit-btn-disabled" : "budg-edit-btn"} />
                     </td>
                     <td id="edit-td">
                         <Button click={() => props.productToDelete(prod._id)}
                             content='Delete'
-                            name={props.editClicked ? "budg-edit-btn budg-edit-btn-disabled " : "budg-edit-btn"} />
+                            name="budg-edit-btn" />
                     </td>
                 </tr>
             )

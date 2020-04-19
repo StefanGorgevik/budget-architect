@@ -1,7 +1,8 @@
 const initState = {
     addNewGroupClicked: false,
     mode: 'products',
-    groups: []
+    groups: [],
+    isGroupSaved: false
 }
 
 export function groupsReducer(state = initState, action) {
@@ -17,6 +18,9 @@ export function groupsReducer(state = initState, action) {
         }
         case "SAVE_GROUP": {
             return { ...state, groups: [...state.groups, action.payload] }
+        }
+        case "IS_GROUP_SAVED": {
+            return { ...state, isGroupSaved: action.payload }
         }
         case "DELETE_GROUP": {
             return { ...state, groups: state.groups.filter(group => group._id !== action.payload._id) }
