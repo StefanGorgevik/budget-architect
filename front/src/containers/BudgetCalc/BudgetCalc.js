@@ -141,17 +141,6 @@ class BudgetCalc extends React.Component {
     }
 
     render() {
-        if (this.state.products) {
-            var totPrice = 0;
-            for (var i = 0; i < this.state.products.length; i++) {
-                if (this.state.products[i].quantity >= 1) {
-                    totPrice += (this.state.products[i].quantity * Number(this.state.products[i].price))
-                } else if (this.state.products[i].quantity < 1) {
-                    totPrice += Number(this.state.products[i].price)
-                }
-            }
-        }
-
         var isUserLogged = localStorage.getItem('userLogged') === 'true'
         return (
             <main className="budget-calc-main">
@@ -182,7 +171,6 @@ class BudgetCalc extends React.Component {
                             productToEdit={this.productToEditHandler}
                             handleCheckboxChange={this.handleCheckboxChange}
                             editClicked={this.state.editClicked}
-                            totalPrice={totPrice}
                         /> : <Groups />}
                     <TableTools
                         deleteProducts={this.deleteProducts}
@@ -200,10 +188,10 @@ class BudgetCalc extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        mode: state.productsReducer.mode,
         products: state.productsReducer.products,
-        groups: state.productsReducer.productGroups,
-        addNewGroupClicked: state.productsReducer.addNewGroupClicked,
+        mode: state.groupsReducer.mode,
+        groups: state.groupsReducer.productGroups,
+        addNewGroupClicked: state.groupsReducer.addNewGroupClicked,
         accountClicked: state.userReducer.accountClicked,
         signInClicked: state.userReducer.signInClicked,
         signOutClicked: state.userReducer.signOutClicked

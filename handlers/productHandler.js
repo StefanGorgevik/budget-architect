@@ -18,7 +18,6 @@ const getProducts = (req, res) => {
     let q = {};
     q.userID = req.user.id;
     let sort = {};
-    console.log(req.query)
     if(req.query.date_from != undefined) {
         if(q.date == undefined){
             q.date = {};
@@ -36,7 +35,6 @@ const getProducts = (req, res) => {
     
     productModel.getProducts(q, sort)
         .then(data => {
-            console.log(data)
             res.status(200).send(data);
         })
         .catch(err => {

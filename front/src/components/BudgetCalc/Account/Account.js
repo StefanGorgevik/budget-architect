@@ -24,7 +24,7 @@ class Account extends Component {
     }
     getUserToEdit = () => {
         var id = localStorage.getItem('user-id')
-        axios.get(`http://localhost:8080/app/v1/getuser/${id}`, {
+        axios.get(`${URL}app/v1/auth/getuser/${id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
@@ -45,7 +45,8 @@ class Account extends Component {
     }
 
     componentDidMount() {
-        if (this.props.isUserLogged) {
+        var isUserLogged = localStorage.getItem('userLogged') === 'true'
+        if (isUserLogged) {
             this.getUserToEdit()
         }
     }
@@ -94,6 +95,26 @@ class Account extends Component {
         }
     }
 
+    editUserHandler = () => {
+        var userID = localStorage.getItem('user-id')
+        axios.put(URL + `app/v1/auth/updateuser/${userID}`, {
+            name: this.state.name,
+            income: this.state.income,
+            email: this.state.email
+        }, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+            }
+        })
+            .then((res) => {
+                console.log(res)
+                this.props.accountClickedAction(false)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
     closeErrorAlert = () => {
         this.setState({ error: false })
     }
@@ -128,13 +149,14 @@ class Account extends Component {
                         <Button click={this.closeAccountHandler}
                             content='Close'
                             name='ng-btn' />
-                        <Button click={this.registerUserHandler}
+                        <Button click={isUserLogged ? this.editUserHandler : this.registerUserHandler}
                             content={isUserLogged ? "Edit" : 'Register'}
                             name='ng-btn' />
                     </div>
-                    <p className="no-acc-p">To sign in, click
+                    {isUserLogged ? null :
+                        <p className="no-acc-p">To sign in, click
                         <span onClick={this.choseSignInHandler} className="here-span">here</span>
-                    </p>
+                        </p>}
                 </div>
             </main>
         )

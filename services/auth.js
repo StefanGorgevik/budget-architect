@@ -25,13 +25,15 @@ app.use(                                                       //sekoj req ke po
         )
 );
 
-app.post('/app/v1/auth/register', usersHandler.registerUser)
-app.post('/app/v1/auth/login', usersHandler.loginUser)
-app.get('/app/v1/getuser/:id', usersHandler.getUser)
+const url = '/app/v1/auth/'
+app.post(url + 'register', usersHandler.registerUser)
+app.post(url + 'login', usersHandler.loginUser)
+app.get(url + 'getuser/:id', usersHandler.getUser)
+app.put(url + 'updateuser/:id', usersHandler.updateUser)
 
 
 app.listen(8080, (err) => {
-    if(err) {
+    if (err) {
         console.log(err)
         console.log("Error")
         return;

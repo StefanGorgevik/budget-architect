@@ -26,7 +26,18 @@
 
 .table-info-selects {
     display: flex;
-    width: 30%;
+    align-items: center;
+    min-width: 25%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    height: 100%;
+}
+
+.label-p {
+    min-width: 20%;
+    height: 50%;
+    color: white;
+    font-size: 20px;
 }
 
 @media screen and (max-width: 700px) {

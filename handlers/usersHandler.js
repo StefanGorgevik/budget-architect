@@ -70,19 +70,20 @@ const getUser = (req, res) => {
         })
 }
 
-// const updateUser = (req, res) => {
-//     usersModel.updateUser(req.params.id, req.body)
-//         .then((data) => {
-//             res.status(200).send(data);
-//         })
-//         .catch(err => {
-//             res.status(500).send(err);
-//         })
-// }
+const updateUser = (req, res) => {
+    usersModel.updateUser(req.params.id, req.body)
+        .then((data) => {
+            res.status(200).send(data);
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send(err);
+        })
+}
 
 module.exports = {
     registerUser,
     loginUser,
     getUser,
-    // updateUser
+    updateUser
 }

@@ -8,6 +8,7 @@ import { getProducts, deleteProduct } from '../../../../redux/actions/productsAc
 import { signInClickedAction } from '../../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import Alert from '../../Alert/Alert'
+const URL = 'http://localhost:8081/'
 class Table extends React.Component {
     constructor(props) {
         super(props)
@@ -15,31 +16,43 @@ class Table extends React.Component {
             products: [],
             deleteProductClicked: false,
             productToDelete: '',
-            selectedMonth: new Date().getMonth(),
+            selectedMonth: 'default',
             selectedYear: '2020'
         }
     }
     componentDidMount() {
-        this.getProductsHandler()
+        this.getAllProductsHandler()
     }
 
-    getProductsHandler = () => {
-        var month;
-        if(this.state.selectedMonth < 10) {
-            month = parseInt(this.state.selectedMonth) + 1
-                month = "0" + month.toString();
+    getAllProductsHandler = () => {
+        axios.get(URL + "app/v1/products/get/?sort=date:desc",
+            {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                }
+            })
+            .then(res => {
+                this.setState({ selectedMonth: 'default' })
+                this.props.getProducts(res.data)
+            })
+            .catch(err => { console.log(err) })
+    }
+
+    getProductsHandler = (mon, yr) => {
+        var year = yr;
+        var month = mon;
+        month = parseInt(month) + 1
+        if (month < 10) {
+            month = "0" + month.toString();
         }
-        var year = this.state.selectedYear
-        console.log(year,month)
         let dateFrom = new Date(`${Number(year)}-${month}-01 00:00:00.000`).getTime()
         let dateTo = new Date(`${Number(year)}-${month}-31 23:59:59.000`).getTime()
-        axios.get(`http://localhost:8081/app/v1/products/get/?date_from=${dateFrom}&date_to=${dateTo}`, {
+        axios.get(`${URL}app/v1/products/get/?date_from=${dateFrom}&date_to=${dateTo}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
         })
             .then((res) => {
-                console.log(res)
                 this.props.getProducts(res.data)
             })
             .catch(error => {
@@ -49,6 +62,7 @@ class Table extends React.Component {
                 }
             })
     }
+
 
     deleteProductClicked = (id) => {
         this.setState({ deleteProductClicked: true, productToDelete: id })
@@ -75,42 +89,65 @@ class Table extends React.Component {
         this.setState({ deleteProductClicked: false })
     }
 
-    selectMonthHandler = (event) => {
-        this.setState({ selectedMonth: event.target.value })
-    }
+    selectFilterHandler = (event) => {
+        var year = this.state.selectedYear;
+        var month
+        if (event.target.value.length === 4) {
+            year = event.target.value
+            this.setState({ selectedYear: event.target.value })
+        } else if (event.target.value.length < 4) {
+            month = event.target.value
+            this.setState({ selectedMonth: event.target.value })
+        }
+        if (event.target.value === 'default') {
+            this.getAllProductsHandler()
+        } else if (event.target.value !== 'default') {
+            this.getProductsHandler(month, year)
+        }
 
-    selectYearHandler = (event) => {
-        this.setState({ selectedYear: event.target.value })
     }
 
     render() {
         var productsLengths = 0;
+        var totPrice = 0;
+        var products;
         if (this.props.products) {
-            productsLengths = this.props.products.length
+            products = this.props.products
+            productsLengths = products.length
+            for (var i = 0; i < products.length; i++) {
+                if (products[i].quantity >= 1) {
+                    totPrice += (products[i].quantity * Number(products[i].price))
+                } else if (products[i].quantity < 1) {
+                    totPrice += Number(products[i].price)
+                }
+
+            }
         }
         return (
             <div className="table-div">
                 {this.state.deleteProductClicked ? <Alert accept={this.deleteProduct} decline={this.closeAlert}
                     text="You are about to delete several items. Are you sure?" show={true} /> : null}
                 <h1>Products</h1>
-                <TableInfo totalPrice={this.props.totalPrice}
+                <TableInfo totalPrice={totPrice}
                     productsLength={productsLengths}
                     selectModeHandler={this.props.selectModeHandler}
-                    selectMonth={this.selectMonthHandler}
-                    selectYear={this.selectYearHandler}
                     selectedMonth={this.state.selectedMonth}
+                    selectFilterHandler={this.selectFilterHandler}
+                    getAllProducts={this.getAllProductsHandler}
                 />
-                <Thead properties={this.props.properties} />
-                <div className="products-div">
-                    <table className="budg-table">
-                        <Tbody products={this.props.products}
-                            productToEdit={this.props.productToEdit}
-                            productToDelete={this.deleteProductClicked}
-                            handleCheckboxChange={this.props.handleCheckboxChange}
-                            editClicked={this.props.editClicked}
-                        />
-                    </table>
-                </div>
+                {productsLengths !== 0 ? <>
+                    <Thead properties={this.props.properties} />
+                    <div className="products-div">
+                        <table className="budg-table">
+                            <Tbody products={this.props.products}
+                                productToEdit={this.props.productToEdit}
+                                productToDelete={this.deleteProductClicked}
+                                handleCheckboxChange={this.props.handleCheckboxChange}
+                                editClicked={this.props.editClicked}
+                            />
+                        </table>
+                    </div>
+                </> : <h1 className="table-h1">No products found. Please create a product!</h1>}
             </div>
         )
     }

@@ -48,7 +48,6 @@ class SignIn extends Component {
                 .catch(err => {
                     console.log(err)
                     this.setState({ error: true })
-                    this.props.userLoggedIn(false)
                 })
         }
     }

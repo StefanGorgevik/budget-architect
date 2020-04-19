@@ -14,10 +14,6 @@ class TableTools extends React.Component {
         }
     }
 
-    handleInputValue = (e) => {
-        this.setState({ addedType: e.target.value })
-    }
-
     handleHover = () => {
         this.setState({ hovered: true })
     }
