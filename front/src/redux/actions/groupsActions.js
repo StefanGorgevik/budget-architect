@@ -12,13 +12,6 @@ export function addNewGroupClicked(clicked) {
     }
 }
 
-export function changeMode(mode) {
-    return {
-        type: "CHANGE_MODE",
-        payload: mode
-    }
-}
-
 export function saveGroup(group) {
     return {
         type: "SAVE_GROUP",
@@ -40,9 +33,23 @@ export function sortGroups(val) {
     }
 }
 
-export function isGroupSavedAction( bool) {
+export function isGroupSavedAction(bool) {
     return {
         type: "IS_GROUP_SAVED",
         payload: bool
+    }
+}
+
+export function groupToEditAction(group) {
+    return {
+        type: "GROUP_TO_EDIT",
+        payload: group
+    }
+}
+
+export function editGroupAction(group) {
+    return {
+        type: "EDIT_GROUP",
+        payload: group
     }
 }

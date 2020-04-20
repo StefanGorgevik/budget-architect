@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const Group = mongoose.model(
     'group', new mongoose.Schema({
         date: Date,
+        store: String,
         totalPrice: Number,
         userID:String,
         products: Array
@@ -48,8 +49,21 @@ const deleteGroup = (id) => {
     })
 }
 
+const updateGroup = (id, data) => {
+    return new Promise((success, fail) => {
+        Group.updateOne({ _id: id }, data, err => {
+            if (err) {
+                console.log(err)
+                return fail(err)
+            }
+            return success(data)
+        })
+    })
+}
+
 module.exports = {
     saveGroup,
     getGroups,
-    deleteGroup
+    deleteGroup,
+    updateGroup
 }

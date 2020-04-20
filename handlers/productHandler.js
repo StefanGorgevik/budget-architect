@@ -1,10 +1,8 @@
 const productModel = require('../models/productModel')
-// const usersModel = require('../models/usersModel')
 
 const saveProduct = (req,res) => {
     const product = req.body
     const user = req.user;
-    // usersModel.updateUser(user.id, {...user})
     productModel.saveProduct({...product, userID: user.id})
     .then((data) => {
         res.status(201).send(data)

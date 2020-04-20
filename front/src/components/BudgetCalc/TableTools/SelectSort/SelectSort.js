@@ -1,10 +1,9 @@
 import React from 'react'
 import './SelectSort.css'
-import { connect } from 'react-redux'
 
 function SelectSort(props) {
     var sorts;
-    if (props.mode === 'groups') {
+    if (localStorage.getItem('mode') === 'groups') {
         sorts = ["date", 'totalPrice']
     } else {
         sorts = props.sorts
@@ -21,10 +20,5 @@ function SelectSort(props) {
     )
 }
 
-function mapStateToProps(state) {
-    return {
-        mode: state.groupsReducer.mode
-    }
-}
 
-export default connect(mapStateToProps)(SelectSort);
+export default SelectSort;

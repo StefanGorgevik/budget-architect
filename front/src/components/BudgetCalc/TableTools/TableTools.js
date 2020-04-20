@@ -1,6 +1,6 @@
 import React from 'react'
 import './TableTools.css'
-import { addNewGroupClicked, changeMode } from '../../../redux/actions/groupsActions'
+import { addNewGroupClicked } from '../../../redux/actions/groupsActions'
 import ToolsContent from './ToolsContent/ToolsContent'
 import {connect} from 'react-redux'
 
@@ -24,11 +24,12 @@ class TableTools extends React.Component {
 
     addNewGroupHandler = () => {
         this.props.addNewGroupClicked(!this.state.addNewGroupClicked)
-        this.props.changeMode('groups')
+        localStorage.setItem('mode', 'groups')
     }
 
     selectModeHandler = (event) => {
-        this.props.changeMode(event.target.value)
+        localStorage.setItem('mode', event.target.value)
+        window.location.reload()
     }
 
     render() {
@@ -62,8 +63,7 @@ class TableTools extends React.Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
-        changeMode: (mode) => dispatch(changeMode(mode))
+        addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool))
     }
 }
 

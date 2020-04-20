@@ -33,10 +33,6 @@ class BudgetCalc extends React.Component {
         }
     }
 
-    componentWillUnmount() {
-        localStorage.clear()
-    }
-
     handleInputValue = (event) => {
         this.setState({ ...this.state, product: { ...this.state.product, [event.target.id]: event.target.value } })
     }
@@ -124,7 +120,7 @@ class BudgetCalc extends React.Component {
 
     selectFilterHandler = (e) => {
         var val = e.target.value
-        if (this.props.mode === 'products') {
+        if (localStorage.getItem('mode') === 'products') {
             this.props.sortProducts(val)
         } else {
             this.props.sortGroups(val)
@@ -153,7 +149,7 @@ class BudgetCalc extends React.Component {
                     text="Your are about to sign out! Are you sure?" show={true}
                 /> : null}
                 {isUserLogged ? <> 
-                {this.props.mode === "products" ? 
+                {localStorage.getItem('mode') === "products" ? 
                     <ProductInputs
                         handleInputValue={this.handleInputValue}
                         product={this.state.product}
@@ -163,7 +159,7 @@ class BudgetCalc extends React.Component {
                         types={this.state.types}
                     /> : null}
                 <div className="budget-calc-content-div">
-                    {this.props.mode === "products" ?
+                    {localStorage.getItem('mode') === "products" ?
                         <Table
                             properties={this.state.properties}
                             products={this.props.products}
@@ -188,7 +184,6 @@ class BudgetCalc extends React.Component {
 function mapStateToProps(state) {
     return {
         products: state.productsReducer.products,
-        mode: state.groupsReducer.mode,
         groups: state.groupsReducer.productGroups,
         addNewGroupClicked: state.groupsReducer.addNewGroupClicked,
         accountClicked: state.userReducer.accountClicked,

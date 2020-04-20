@@ -1,7 +1,6 @@
 const initState = {
     products: [],
     addNewGroupClicked: false,
-    mode: 'products',
     productToEdit: {},
     isProductSaved: false
 }

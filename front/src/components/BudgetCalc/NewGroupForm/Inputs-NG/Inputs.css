@@ -1,13 +1,18 @@
 .ng-date-div {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     border-bottom: 1px solid white;
-    height: 20%;
+    height: 30%;
     width: 100%;
     margin-bottom:  10px;
 }
 
+.store-input-div {
+    display: flex;
+    flex-direction: row;   
+    height: 50%;
+}
 
 ::placeholder {
     font-size: 15px;

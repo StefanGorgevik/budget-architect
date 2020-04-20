@@ -3,16 +3,17 @@ import './NewGroup.css'
 import Inputs from '../Inputs-NG/Inputs'
 import Table from '../Table-NG/Table'
 import Button from '../../Button/Button'
-import { addNewGroupClicked, saveGroup, isGroupSavedAction } from '../../../../redux/actions/groupsActions'
+import { addNewGroupClicked, saveGroup, isGroupSavedAction, editGroupAction } from '../../../../redux/actions/groupsActions'
 import Alert from '../../Alert/Alert'
 import axios from 'axios'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 const URL = 'http://localhost:8082/'
 
 class NewGroup extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            store: '',
             date: '',
             newGroupProducts: [],
             product: {
@@ -21,6 +22,17 @@ class NewGroup extends React.Component {
                 quantity: 1
             },
             error: false
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.groupToEdit) {
+            var group = this.props.groupToEdit
+            this.setState({
+                store: group.store,
+                date: group.date,
+                newGroupProducts: group.products
+            })
         }
     }
 
@@ -39,14 +51,16 @@ class NewGroup extends React.Component {
     addProductToGroup = (e) => {
         e.preventDefault()
         var product = this.state.product
-        if (product.name !== '' && product.price !== 0 && product.quantity > 0) {
-            var prods = this.state.newGroupProducts
-            product.id = Math.floor(Math.random() * 1000)
-            prods.push(product)
-            this.setState({
-                newGroupProducts: prods,
-                product: { name: '', price: 0, quantity: 1 }
-            })
+        if (this.state.product.name !== '' && product.price !== 0 && product.quantity > 0) {
+            if (this.state.newGroupProducts) {
+                var prods = this.state.newGroupProducts
+                product.id = Math.floor(Math.random() * 1000)
+                prods.push(product)
+                this.setState({
+                    newGroupProducts: prods,
+                    product: { name: '', price: 0, quantity: 1 }
+                })
+            }
         } else {
             this.setState({ error: true })
         }
@@ -64,15 +78,17 @@ class NewGroup extends React.Component {
     }
 
     getTotalPrice = (products) => {
-        let totalPrice = 0;
-        for (var i = 0; i < products.length; i++) {
-            if (products[i].quantity > 1) {
-                totalPrice += (products[i].quantity * Number(products[i].price))
-            } else {
-                totalPrice += Number(products[i].price)
+        if (products) {
+            let totalPrice = 0;
+            for (var i = 0; i < products.length; i++) {
+                if (products[i].quantity > 1) {
+                    totalPrice += (products[i].quantity * Number(products[i].price))
+                } else {
+                    totalPrice += Number(products[i].price)
+                }
             }
+            return totalPrice;
         }
-        return totalPrice;
     }
 
     saveGroupOfProducts = () => {
@@ -80,25 +96,72 @@ class NewGroup extends React.Component {
             var products = this.state.newGroupProducts
             var totalPrice = this.getTotalPrice(products);
             axios.post(URL + `app/v1/groups/`, {
+                store: this.state.store,
                 date: this.state.date,
                 totalPrice: totalPrice,
                 userID: localStorage.getItem('user-id'),
                 products: this.state.newGroupProducts
             },
-            {
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                })
+                .then(res => {
+                    this.props.saveGroup(res.data)
+                    this.setState({ newGroupProducts: [], date: '', store: '' })
+                    this.props.addNewGroupClicked(false)
+                    this.props.isGroupSavedAction(true)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } else {
+            this.setState({ error: true })
+        }
+    }
+
+    editGroupHandler = (event) => {
+        event.preventDefault()
+        var groupID = this.props.groupToEdit._id
+        var products = this.state.newGroupProducts
+        var totalPrice = this.getTotalPrice(products)
+        var group = {
+            _id: groupID,
+            store: this.state.store,
+            date: this.state.date,
+            totalPrice: totalPrice,
+            userID: localStorage.getItem('user-id'),
+            products: this.state.newGroupProducts
+        }
+        if (this.state.date !== '' && this.state.newGroupProducts.length !== 0) {
+            axios.put(URL + `app/v1/groups/${groupID}`,
+                {
+                    store: this.state.store,
+                    date: this.state.date,
+                    totalPrice: totalPrice,
+                    userID: localStorage.getItem('user-id'),
+                    products: this.state.newGroupProducts
+                }, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('jwt')}`
                 }
             })
-            .then(res => {
-                this.props.saveGroup(res.data)
-                this.setState({ newGroupProducts: [], date: '' })
-                this.props.addNewGroupClicked(false)
-                this.props.isGroupSavedAction(true)
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                .then((res) => {
+                    this.props.editGroupAction(group)
+                    this.setState({
+                        error: false,
+                        store: '',
+                        date: '',
+                        newGroupProducts: [],
+                        product: { name: '', price: 0, quantity: 1 }
+                    })
+                    this.props.addNewGroupClicked(false)
+                })
+                .catch(err => {
+                    console.log(err)
+                    this.setState({ error: true })
+                })
         } else {
             this.setState({ error: true })
         }
@@ -120,15 +183,15 @@ class NewGroup extends React.Component {
                         <Inputs addProductToGroup={this.addProductToGroup}
                             handleGroupDateInputValue={this.handleGroupDateInputValue}
                             handleProductInputValue={this.handleProductInputValue}
-                            product={this.state.product} 
-                                dateValue={this.state.date}
-                            />
+                            product={this.state.product}
+                            dateValue={this.state.date}
+                        />
                         <div className="ng-btns-div">
                             <Button click={this.closeNewGroup}
                                 content='Close'
                                 name='ng-btn ng-close-btn' />
-                            <Button click={this.saveGroupOfProducts}
-                                content='Save group'
+                            <Button click={this.props.groupToEdit ? this.editGroupHandler : this.saveGroupOfProducts}
+                                content={this.props.groupToEdit ? 'Edit group' : 'Save group'}
                                 name='ng-btn' />
                         </div>
                     </div>
@@ -145,13 +208,21 @@ class NewGroup extends React.Component {
     }
 }
 
+function mapStateToProps(state) {
+    console.log(state.groupsReducer.groupToEdit)
+    return {
+        groupToEdit: state.groupsReducer.groupToEdit
+    }
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
         isGroupSavedAction: (bool) => dispatch(isGroupSavedAction(bool)),
-        saveGroup: (data) => dispatch(saveGroup(data))
+        saveGroup: (data) => dispatch(saveGroup(data)),
+        editGroupAction: (data) => dispatch(editGroupAction(data))
     }
 }
 
 
-export default connect(null, mapDispatchToProps)(NewGroup); 
+export default connect(mapStateToProps, mapDispatchToProps)(NewGroup); 

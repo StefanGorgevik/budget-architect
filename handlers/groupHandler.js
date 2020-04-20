@@ -35,8 +35,21 @@ const deleteGroup = (req, res) => {
     })
 }
 
+const updateGroup = (req, res) => {
+    var newGroup = req.body;
+    groupModel.updateGroup(req.params.id, newGroup)
+        .then(() => {
+            res.status(201).send('Item updated!');
+        })
+        .catch((err) => {
+            console.log(err)
+            res.status(500).send(err)
+        })
+}
+
 module.exports = {
     getGroups,
     saveGroup,
-    deleteGroup
+    deleteGroup,
+    updateGroup
 }

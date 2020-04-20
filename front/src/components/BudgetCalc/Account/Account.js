@@ -19,7 +19,8 @@ class Account extends Component {
             income: 0,
             email: '',
             password: '',
-            error: false
+            error: false,
+            userExists: false
         }
     }
     getUserToEdit = () => {
@@ -30,7 +31,6 @@ class Account extends Component {
             }
         })
             .then(res => {
-                console.log(res.data[0])
                 this.setState({
                     name: res.data[0].name,
                     income: res.data[0].income,
@@ -87,8 +87,11 @@ class Account extends Component {
                             this.setState({ error: true })
                         })
                 })
-                .catch(err => {
-                    console.log(err)
+                .catch(error => {
+                    console.log(error)
+                    if(error.response.status === 500) {
+                        this.setState({userExists: true})
+                    }
                 })
         } else {
             this.setState({ error: true })
@@ -145,6 +148,7 @@ class Account extends Component {
                             id="password" label='password' placeholder="password"
                             value={this.state.password} /> :
                         <p className="change-pw-p">Change password</p>}
+                        {this.state.userExists ? <p>User already exists!</p> : null }
                     <div className="btns-div">
                         <Button click={this.closeAccountHandler}
                             content='Close'

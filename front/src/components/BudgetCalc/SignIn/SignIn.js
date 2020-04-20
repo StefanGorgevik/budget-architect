@@ -15,7 +15,8 @@ class SignIn extends Component {
         this.state = {
             email: '',
             password: '',
-            error: false
+            error: false,
+            userNotFound: false
         }
     }
 
@@ -36,7 +37,7 @@ class SignIn extends Component {
                 password: this.state.password
             })
                 .then(res => {
-                    this.setState({ error: false })
+                    this.setState({ error: false, userNotFound: false })
                     console.log(res)
                     localStorage.setItem('jwt', res.data.jwt)
                     localStorage.setItem('name', res.data.name)
@@ -45,9 +46,12 @@ class SignIn extends Component {
                     this.props.signInClickedAction(false)
                     window.location.reload()
                 })
-                .catch(err => {
-                    console.log(err)
+                .catch(error => {
+                    console.log(error)
                     this.setState({ error: true })
+                    if(error.response.status === 500) {
+                        this.setState({userNotFound: true})
+                    }
                 })
         }
     }
@@ -65,7 +69,7 @@ class SignIn extends Component {
         return (
             <div className="sign-in-main">
                 {this.state.error ? <Alert accept={this.closeErrorAlert}
-                    text="Please fill up every field or check your credentials!"
+                    text="User not found! Please fill up every field or check your credentials!"
                     show={false} />
                     : null}
                 <div className="sign-in-div">

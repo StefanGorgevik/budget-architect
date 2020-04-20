@@ -8,6 +8,7 @@ import { getProducts, deleteProduct, isProductSavedAction } from '../../../../re
 import { signInClickedAction } from '../../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import Alert from '../../Alert/Alert'
+import Loading from '../../Loading/Loading'
 const URL = 'http://localhost:8081/'
 class Table extends React.Component {
     constructor(props) {
@@ -17,7 +18,8 @@ class Table extends React.Component {
             deleteProductClicked: false,
             productToDelete: '',
             selectedMonth: 'default',
-            selectedYear: '2020'
+            selectedYear: '2020',
+            productsLoaded: false
         }
     }
     componentDidUpdate() {
@@ -31,6 +33,7 @@ class Table extends React.Component {
         this.getAllProductsHandler()
     }
 
+
     getAllProductsHandler = () => {
         axios.get(URL + "app/v1/products/get/?sort=date:desc",
             {
@@ -39,10 +42,12 @@ class Table extends React.Component {
                 }
             })
             .then(res => {
-                this.setState({ selectedMonth: 'default' })
-                this.props.getProducts(res.data)
+                this.setState({ selectedMonth: 'default', productsLoaded: true })
+                this.props.getProducts(res.data)  
             })
-            .catch(err => { console.log(err) })
+            .catch(err => { 
+                this.setState({  productsLoaded: false })
+                console.log(err) })
     }
 
     getProductsHandler = (mon, yr) => {
@@ -115,34 +120,36 @@ class Table extends React.Component {
     }
 
     render() {
-        var productsLengths = 0;
+        var productsLength = 0;
         var totPrice = 0;
         var products;
         if (this.props.products) {
             products = this.props.products
-            productsLengths = products.length
+            productsLength = products.length
             for (var i = 0; i < products.length; i++) {
                 if (products[i].quantity >= 1) {
                     totPrice += (products[i].quantity * Number(products[i].price))
                 } else if (products[i].quantity < 1) {
                     totPrice += Number(products[i].price)
                 }
-
             }
         }
+
+
         return (
             <div className="table-div">
                 {this.state.deleteProductClicked ? <Alert accept={this.deleteProduct} decline={this.closeAlert}
                     text="You are about to delete several items. Are you sure?" show={true} /> : null}
                 <h1>Products</h1>
                 <TableInfo totalPrice={totPrice}
-                    productsLength={productsLengths}
+                    productsLength={productsLength}
                     selectModeHandler={this.props.selectModeHandler}
                     selectedMonth={this.state.selectedMonth}
                     selectFilterHandler={this.selectFilterHandler}
                     getAllProducts={this.getAllProductsHandler}
                 />
-                {productsLengths !== 0 ? <>
+                {this.state.productsLoaded ? 
+                productsLength !== 0 ? <>
                     <Thead properties={this.props.properties} />
                     <div className="products-div">
                         <table className="budg-table">
@@ -154,7 +161,9 @@ class Table extends React.Component {
                             />
                         </table>
                     </div>
-                </> : <h1 className="table-h1">No products found. Please create a product!</h1>}
+                </> :
+                <h1 className="table-h1">No products found. Please create a product!</h1>
+                : <Loading/>}
             </div>
         )
     }

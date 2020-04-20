@@ -12,16 +12,21 @@ function Inputs(props) {
             <div className="ng-date-div">
                 <DateInput saveValue={props.handleGroupDateInputValue}
                     id="date" label='date' value={props.dateValue} />
+                <div className="store-input-div">
+                    <TextInput saveValue={props.handleProductInputValue} id="store"
+                        label='store(optional)' placeholder="Store"
+                        value={props.product.store} extra='store' />
+                </div>
             </div>
             <TextInput saveValue={props.handleProductInputValue} id="name"
-                        label='name' placeholder="Product name"
-                        value={props.product.name} />
-                    <NumberInput saveValue={props.handleProductInputValue}
-                        id="price" label='price' placeholder="price"
-                        value={props.product.price} />
-                    <NumberInput saveValue={props.handleProductInputValue}
-                        id="quantity" label='quantity' placeholder="quantity"
-                        value={props.product.quantity} />
+                label='name' placeholder="Product name"
+                value={props.product.name} />
+            <NumberInput saveValue={props.handleProductInputValue}
+                id="price" label='price' placeholder="price"
+                value={props.product.price} />
+            <NumberInput saveValue={props.handleProductInputValue}
+                id="quantity" label='quantity' placeholder="quantity"
+                value={props.product.quantity} />
             <Button click={props.addProductToGroup}
                 content='Add product to group'
                 name="ng-btn"

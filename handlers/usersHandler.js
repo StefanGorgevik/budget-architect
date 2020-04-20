@@ -11,17 +11,26 @@ const registerUser = (req, res) => {
     validate.check()
     .then(matched => {
         if(matched) {
-            bcrypt.genSalt(10, function(err, salt) {
-                if(err) {
-                    throw new Error(err);
-                    return;
-                } 
-                bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    if(err) {
-                        throw new Error(err);
-                        return;
-                    } return usersModel.register({...newUser, password: hash})
-                })
+            return usersModel.getUserPasswordByEmail(newUser.email)
+            .then((ed) => {
+                console.log(ed);
+                if(!ed) {
+                    bcrypt.genSalt(10, function(err, salt) {
+                        if(err) {
+                            throw new Error(err);
+                            return;
+                        } 
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if(err) {
+                                throw new Error(err);
+                                return;
+                            } return usersModel.register({...newUser, password: hash})
+                        })
+                    })
+                } else {
+                    console.log('else')
+                    throw new Error('Bad Request - User Exists');
+                }
             })
         } else {
             throw new Error("Validation failed");

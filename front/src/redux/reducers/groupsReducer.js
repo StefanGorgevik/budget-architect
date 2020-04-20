@@ -1,8 +1,8 @@
 const initState = {
     addNewGroupClicked: false,
-    mode: 'products',
     groups: [],
-    isGroupSaved: false
+    isGroupSaved: false,
+    groupToEdit: {}
 }
 
 export function groupsReducer(state = initState, action) {
@@ -12,9 +12,6 @@ export function groupsReducer(state = initState, action) {
         }
         case "ADD_NEW_GROUP_CLICKED": {
             return { ...state, addNewGroupClicked: action.payload }
-        }
-        case "CHANGE_MODE": {
-            return { ...state, mode: action.payload }
         }
         case "SAVE_GROUP": {
             return { ...state, groups: [...state.groups, action.payload] }
@@ -27,10 +24,28 @@ export function groupsReducer(state = initState, action) {
         }
         case "SORT_GROUPS": {
             let val = action.payload
-            console.log(val)
             return {
                 ...state, groups: [...state.groups].sort((a, b) =>
                     (a[val] > b[val]) ? 1 : ((b[val] > a[val]) ? -1 : 0))
+            }
+        }
+        case "GROUP_TO_EDIT": {
+            return {
+                ...state, groupToEdit: action.payload
+            }
+        }
+        case "EDIT_GROUP": {
+            return {
+                ...state, groups: state.groups.map((group) => {
+                    if(group._id === action.payload._id) {
+                        return {
+                            ...group,
+                            ...action.payload
+                        }
+                    } else {
+                        return group
+                    }
+                })
             }
         }
         default:

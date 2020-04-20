@@ -27,7 +27,7 @@ const url = '/app/v1/groups/'
 app.get(url + 'get/', groupHandler.getGroups)
 app.post(url, groupHandler.saveGroup)
 app.delete(url + ':id', groupHandler.deleteGroup);
-// app.put(url + ':id', groupHandler.updateProduct);
+app.put(url + ':id', groupHandler.updateGroup);
 
 app.listen(8082, (err) => {
     if(err) {
