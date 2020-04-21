@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const Group = mongoose.model(
     'group', new mongoose.Schema({
         date: Date,
-        store: String,
         totalPrice: Number,
         userID:String,
         products: Array

@@ -3,7 +3,7 @@ import './NewGroup.css'
 import Inputs from '../Inputs-NG/Inputs'
 import Table from '../Table-NG/Table'
 import Button from '../../Button/Button'
-import { addNewGroupClicked, saveGroup, isGroupSavedAction, editGroupAction } from '../../../../redux/actions/groupsActions'
+import { addNewGroupClicked, saveGroup, isGroupSavedAction, editGroupAction, groupToEditAction, editGroupClickedAction } from '../../../../redux/actions/groupsActions'
 import Alert from '../../Alert/Alert'
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -13,7 +13,6 @@ class NewGroup extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            store: '',
             date: '',
             newGroupProducts: [],
             product: {
@@ -26,10 +25,10 @@ class NewGroup extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.groupToEdit) {
+        if (this.props.isGroupEditClicked) {
+            console.log('mount')
             var group = this.props.groupToEdit
             this.setState({
-                store: group.store,
                 date: group.date,
                 newGroupProducts: group.products
             })
@@ -39,12 +38,12 @@ class NewGroup extends React.Component {
     handleProductInputValue = (event) => {
         this.setState({
             ...this.state,
-            product: { ...this.state.product, [event.target.id]: event.target.value },
-            [event.target.id]: event.target.value
+            product: { ...this.state.product, [event.target.id]: event.target.value }
         })
     }
 
     handleGroupDateInputValue = (event) => {
+        console.log(event.target.value)
         this.setState({ [event.target.id]: event.target.value })
     }
 
@@ -52,15 +51,13 @@ class NewGroup extends React.Component {
         e.preventDefault()
         var product = this.state.product
         if (this.state.product.name !== '' && product.price !== 0 && product.quantity > 0) {
-            if (this.state.newGroupProducts) {
-                var prods = this.state.newGroupProducts
-                product.id = Math.floor(Math.random() * 1000)
-                prods.push(product)
-                this.setState({
-                    newGroupProducts: prods,
-                    product: { name: '', price: 0, quantity: 1 }
-                })
-            }
+            var prods = this.state.newGroupProducts
+            product.id = Math.floor(Math.random() * 1000)
+            prods.push(product)
+            this.setState({
+                newGroupProducts: prods,
+                product: { name: '', price: 0, quantity: 1 }
+            })
         } else {
             this.setState({ error: true })
         }
@@ -96,7 +93,6 @@ class NewGroup extends React.Component {
             var products = this.state.newGroupProducts
             var totalPrice = this.getTotalPrice(products);
             axios.post(URL + `app/v1/groups/`, {
-                store: this.state.store,
                 date: this.state.date,
                 totalPrice: totalPrice,
                 userID: localStorage.getItem('user-id'),
@@ -109,9 +105,9 @@ class NewGroup extends React.Component {
                 })
                 .then(res => {
                     this.props.saveGroup(res.data)
-                    this.setState({ newGroupProducts: [], date: '', store: '' })
-                    this.props.addNewGroupClicked(false)
                     this.props.isGroupSavedAction(true)
+                    this.setState({ newGroupProducts: [], date: '' })
+                    this.props.addNewGroupClicked(false)
                 })
                 .catch(err => {
                     console.log(err)
@@ -128,7 +124,6 @@ class NewGroup extends React.Component {
         var totalPrice = this.getTotalPrice(products)
         var group = {
             _id: groupID,
-            store: this.state.store,
             date: this.state.date,
             totalPrice: totalPrice,
             userID: localStorage.getItem('user-id'),
@@ -137,7 +132,6 @@ class NewGroup extends React.Component {
         if (this.state.date !== '' && this.state.newGroupProducts.length !== 0) {
             axios.put(URL + `app/v1/groups/${groupID}`,
                 {
-                    store: this.state.store,
                     date: this.state.date,
                     totalPrice: totalPrice,
                     userID: localStorage.getItem('user-id'),
@@ -151,7 +145,6 @@ class NewGroup extends React.Component {
                     this.props.editGroupAction(group)
                     this.setState({
                         error: false,
-                        store: '',
                         date: '',
                         newGroupProducts: [],
                         product: { name: '', price: 0, quantity: 1 }
@@ -168,6 +161,14 @@ class NewGroup extends React.Component {
     }
 
     closeNewGroup = () => {
+        console.log(this.state.date)
+        this.props.groupToEditAction({})
+        this.props.editGroupClickedAction(false)
+        this.setState({
+            date: '',
+            newGroupProducts: [],
+            product: { name: '', price: 0, quantity: 1 }
+        })
         this.props.addNewGroupClicked(false)
     }
 
@@ -190,9 +191,13 @@ class NewGroup extends React.Component {
                             <Button click={this.closeNewGroup}
                                 content='Close'
                                 name='ng-btn ng-close-btn' />
-                            <Button click={this.props.groupToEdit ? this.editGroupHandler : this.saveGroupOfProducts}
-                                content={this.props.groupToEdit ? 'Edit group' : 'Save group'}
-                                name='ng-btn' />
+                            {this.props.isGroupEditClicked ?
+                                <Button click={this.editGroupHandler}
+                                    content='Edit group'
+                                    name='ng-btn' /> :
+                                <Button click={this.saveGroupOfProducts}
+                                    content='Save group'
+                                    name='ng-btn' />}
                         </div>
                     </div>
                     <div className="ng-right-side">
@@ -209,9 +214,9 @@ class NewGroup extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state.groupsReducer.groupToEdit)
     return {
-        groupToEdit: state.groupsReducer.groupToEdit
+        groupToEdit: state.groupsReducer.groupToEdit,
+        isGroupEditClicked: state.groupsReducer.isGroupEditClicked
     }
 }
 
@@ -220,7 +225,9 @@ function mapDispatchToProps(dispatch) {
         addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
         isGroupSavedAction: (bool) => dispatch(isGroupSavedAction(bool)),
         saveGroup: (data) => dispatch(saveGroup(data)),
-        editGroupAction: (data) => dispatch(editGroupAction(data))
+        editGroupAction: (data) => dispatch(editGroupAction(data)),
+        groupToEditAction: (data) => dispatch(groupToEditAction(data)),
+        editGroupClickedAction: (bool) => dispatch(editGroupClickedAction(bool))
     }
 }
 

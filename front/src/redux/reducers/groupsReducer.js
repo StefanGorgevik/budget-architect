@@ -2,7 +2,8 @@ const initState = {
     addNewGroupClicked: false,
     groups: [],
     isGroupSaved: false,
-    groupToEdit: {}
+    groupToEdit: {},
+    isGroupEditClicked: false
 }
 
 export function groupsReducer(state = initState, action) {
@@ -32,6 +33,11 @@ export function groupsReducer(state = initState, action) {
         case "GROUP_TO_EDIT": {
             return {
                 ...state, groupToEdit: action.payload
+            }
+        }
+        case "EDIT_GROUP_CLICKED": {
+            return {
+                ...state, isGroupEditClicked: action.payload
             }
         }
         case "EDIT_GROUP": {

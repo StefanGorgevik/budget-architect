@@ -184,7 +184,7 @@ class BudgetCalc extends React.Component {
 function mapStateToProps(state) {
     return {
         products: state.productsReducer.products,
-        groups: state.groupsReducer.productGroups,
+        groups: state.groupsReducer.groups,
         addNewGroupClicked: state.groupsReducer.addNewGroupClicked,
         accountClicked: state.userReducer.accountClicked,
         signInClicked: state.userReducer.signInClicked,

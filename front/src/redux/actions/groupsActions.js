@@ -46,6 +46,12 @@ export function groupToEditAction(group) {
         payload: group
     }
 }
+export function editGroupClickedAction(bool) {
+    return {
+        type: "EDIT_GROUP_CLICKED",
+        payload: bool
+    }
+}
 
 export function editGroupAction(group) {
     return {

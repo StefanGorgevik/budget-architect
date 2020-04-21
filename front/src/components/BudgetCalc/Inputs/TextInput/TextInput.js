@@ -9,7 +9,7 @@ function TextInput(props) {
             <Label id={props.id} label={props.label} />
             <input type='text'
                 onChange={props.saveValue}
-                className={ props.extra === 'store' ? 'store-div inputs' : "inputs"}
+                className="inputs"
                 id={props.id}
                 placeholder={props.placeholder}
                 value={props.value} />

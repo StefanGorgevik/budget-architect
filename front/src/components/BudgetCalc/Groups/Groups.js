@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Selected from './Selected/Selected'
 import Button from '../Button/Button'
 import GroupsTable from './GroupsTable/GroupsTable'
-import { addNewGroupClicked, deleteGroup, groupToEditAction } from '../../../redux/actions/groupsActions'
+import { addNewGroupClicked, deleteGroup, groupToEditAction, editGroupClickedAction } from '../../../redux/actions/groupsActions'
 import Alert from '../Alert/Alert'
 import axios from 'axios'
 const URL = 'http://localhost:8082/'
@@ -58,6 +58,7 @@ class Groups extends React.Component {
 
     editGroupHandler = (group) => {
         this.props.groupToEditAction(group)
+        this.props.editGroupClickedAction(true)
         this.props.addNewGroupClicked(true)
         this.setState({ groupSelected: false})
     }
@@ -116,7 +117,8 @@ function mapDispatchToProps(dispatch) {
     return {
         addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
         deleteGroup: (group) => dispatch(deleteGroup(group)),
-        groupToEditAction: (group) => dispatch(groupToEditAction(group))
+        groupToEditAction: (group) => dispatch(groupToEditAction(group)),
+        editGroupClickedAction: (bool) => dispatch(editGroupClickedAction(bool))
     }
 }
 
