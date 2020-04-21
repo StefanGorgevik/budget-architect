@@ -3,14 +3,24 @@ const initState = {
     groups: [],
     isGroupSaved: false,
     groupToEdit: {},
-    isGroupEditClicked: false
+    isGroupEditClicked: false,
+    groupsProductsNumber: 0
 }
 
 export function groupsReducer(state = initState, action) {
     switch (action.type) {
         case "GET_GROUPS": {
-            return { ...state, groups: action.payload }
+            var groups = action.payload;
+            var groupsProductsLength = 0;
+            var b = groups.map((group, i) => {
+                return (
+                    groupsProductsLength += group.products.length
+                )
+            });
         }
+            return { ...state, groups: action.payload, groupsProductsNumber: groupsProductsLength }
+
+
         case "ADD_NEW_GROUP_CLICKED": {
             return { ...state, addNewGroupClicked: action.payload }
         }
@@ -43,7 +53,7 @@ export function groupsReducer(state = initState, action) {
         case "EDIT_GROUP": {
             return {
                 ...state, groups: state.groups.map((group) => {
-                    if(group._id === action.payload._id) {
+                    if (group._id === action.payload._id) {
                         return {
                             ...group,
                             ...action.payload

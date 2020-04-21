@@ -81,7 +81,6 @@ class Groups extends React.Component {
             var groupsTotalPrice = 0
             for (let i = 0; i < groups.length; i++) {
                     groupsTotalPrice += Number(groups[i].totalPrice)
-                
             }
             console.log( groupsTotalPrice)
         }
