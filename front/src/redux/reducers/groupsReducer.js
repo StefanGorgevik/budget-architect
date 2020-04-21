@@ -27,7 +27,7 @@ export function groupsReducer(state = initState, action) {
             let val = action.payload
             return {
                 ...state, groups: [...state.groups].sort((a, b) =>
-                    (a[val] > b[val]) ? 1 : ((b[val] > a[val]) ? -1 : 0))
+                    (a[val] > b[val]) ? -1 : ((b[val] > a[val]) ? 1 : 0))
             }
         }
         case "GROUP_TO_EDIT": {

@@ -26,7 +26,6 @@ class NewGroup extends React.Component {
 
     componentDidMount() {
         if (this.props.isGroupEditClicked) {
-            console.log('mount')
             var group = this.props.groupToEdit
             this.setState({
                 date: group.date,
@@ -43,7 +42,6 @@ class NewGroup extends React.Component {
     }
 
     handleGroupDateInputValue = (event) => {
-        console.log(event.target.value)
         this.setState({ [event.target.id]: event.target.value })
     }
 
@@ -89,7 +87,7 @@ class NewGroup extends React.Component {
     }
 
     saveGroupOfProducts = () => {
-        if (this.state.date !== '') {
+        if (this.state.date !== '' && this.state.newGroupProducts.length !== 0) {
             var products = this.state.newGroupProducts
             var totalPrice = this.getTotalPrice(products);
             axios.post(URL + `app/v1/groups/`, {
@@ -149,6 +147,7 @@ class NewGroup extends React.Component {
                         newGroupProducts: [],
                         product: { name: '', price: 0, quantity: 1 }
                     })
+                    this.props.groupToEditAction({})
                     this.props.addNewGroupClicked(false)
                 })
                 .catch(err => {
@@ -161,7 +160,6 @@ class NewGroup extends React.Component {
     }
 
     closeNewGroup = () => {
-        console.log(this.state.date)
         this.props.groupToEditAction({})
         this.props.editGroupClickedAction(false)
         this.setState({
@@ -177,7 +175,10 @@ class NewGroup extends React.Component {
         var totalPrice = this.getTotalPrice(products)
         return (
             <main className="ng-main">
-                {this.state.error ? <Alert accept={this.closeErrorAlert} text="Please fill up every field!" show={false} /> : null}
+                {this.state.error ? <Alert
+                    accept={this.closeErrorAlert}
+                    text="Please fill up every field and add products!"
+                    show={false} /> : null}
                 <div className="ng-div">
                     <div className='ng-left-side'>
                         <h3>New group of products</h3>

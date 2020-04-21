@@ -8,10 +8,12 @@ function SelectSort(props) {
     } else {
         sorts = props.sorts
     }
+
+    var mode = localStorage.getItem('mode')
     return (
         <div className="select-sort-div" >
             <select id="sort" className="type-select" onChange={props.selectFilterHandler}>
-            <option value="default" >Select sort ascending</option>
+            <option value="default" >Select sort {mode === 'products' ? 'ascending' : 'descending'}</option>
                 {sorts.map((sort, index) => {
                     return <option key={`sort${index}`} value={sort}>{sort }</option>
                 })}

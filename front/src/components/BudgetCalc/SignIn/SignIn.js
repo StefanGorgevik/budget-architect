@@ -37,12 +37,14 @@ class SignIn extends Component {
                 password: this.state.password
             })
                 .then(res => {
-                    this.setState({ error: false, userNotFound: false })
                     console.log(res)
+                    this.setState({ error: false, userNotFound: false })
                     localStorage.setItem('jwt', res.data.jwt)
                     localStorage.setItem('name', res.data.name)
                     localStorage.setItem('user-id', res.data.id)
+                    localStorage.setItem('income', res.data.income)
                     localStorage.setItem('userLogged', 'true')
+                    localStorage.setItem('mode', 'products')
                     this.props.signInClickedAction(false)
                     window.location.reload()
                 })

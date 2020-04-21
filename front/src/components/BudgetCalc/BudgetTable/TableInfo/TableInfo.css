@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 95%;
+    width: 97%;
     height: 60px;
     margin: 5px auto;
     border: 2px solid black;
@@ -11,7 +11,7 @@
 }
 
 .price-p {
-    font-size: 28px;
+    font-size: 24px;
     color: rgb(17, 17, 17);
     letter-spacing: 2px;
     border-radius: 20px;
@@ -20,7 +20,7 @@
 }
 
 .price-p span {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: bold;
 }
 

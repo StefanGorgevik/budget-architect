@@ -1,7 +1,8 @@
 import React from 'react'
 import './Header.css'
-import {accountClickedAction, signInClickedAction, signOutClickedAction} from '../../../redux/actions/userActions'
-import {connect} from 'react-redux'
+import { accountClickedAction, signInClickedAction, signOutClickedAction } from '../../../redux/actions/userActions'
+import { connect } from 'react-redux'
+import HeaderInfo from '../HeaderInfo/HeaderInfo'
 
 function Header(props) {
     const accountClickedHandler = () => {
@@ -11,14 +12,28 @@ function Header(props) {
         props.signInClickedAction(true)
     }
     const signOutHandler = () => {
-       props.signOutClickedAction(true)
+        props.signOutClickedAction(true)
     }
 
     var isUserLogged = localStorage.getItem('userLogged') === 'true'
 
+    var totalPrice = 0;
+    var products;
+    if (props.products) {
+        products = props.products
+        for (var i = 0; i < products.length; i++) {
+            if (products[i].quantity >= 1) {
+                totalPrice += (products[i].quantity * Number(products[i].price))
+            } else if (products[i].quantity < 1) {
+                totalPrice += Number(products[i].price)
+            }
+        }
+    }
+
     return (
         <nav className="header-main">
             <h1 className="header-title">Budget Architect</h1>
+            <HeaderInfo totalPrice={totalPrice} />
             <ul className="header-ul">
                 <li onClick={accountClickedHandler}>{isUserLogged ? "Account" : "Register"}</li>
                 <li onClick={isUserLogged ? signOutHandler : signInClickedHandler}>{isUserLogged ? "Sign Out" : "Sign In"}</li>
@@ -28,6 +43,12 @@ function Header(props) {
 }
 
 
+function mapStateToProps(state) {
+    return {
+        products: state.productsReducer.products
+    }
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         accountClickedAction: (bool) => dispatch(accountClickedAction(bool)),
@@ -36,4 +57,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

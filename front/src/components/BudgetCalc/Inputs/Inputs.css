@@ -18,7 +18,10 @@
     text-transform: capitalize;
     width: 95%;
 }
-
+#date { 
+    min-width: 190px;
+    padding: 0;
+}
 #email {
     text-transform: lowercase;
 }

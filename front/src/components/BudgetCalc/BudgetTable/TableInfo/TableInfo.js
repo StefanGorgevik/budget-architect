@@ -10,7 +10,7 @@ function TableInfo(props) {
     return (
         <div className="table-info-div">
             <p className="price-p">Total price: <span>{props.totalPrice}</span></p>
-            <p className="price-p">Number of products: <span>{props.productsLength}</span></p>
+            <p className="price-p">Products: <span>#{props.productsLength}</span></p>
             <div className="table-info-selects">    
                 <p className="label-p">Month: </p>
                 <Select options={months} selectOption={props.selectFilterHandler} selectedMonth={props.selectedMonth} label='month' value={props.selectedMonth}/>

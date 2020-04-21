@@ -135,7 +135,6 @@ class Table extends React.Component {
             }
         }
 
-
         return (
             <div className="table-div">
                 {this.state.deleteProductClicked ? <Alert accept={this.deleteProduct} decline={this.closeAlert}

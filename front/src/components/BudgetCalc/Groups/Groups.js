@@ -66,15 +66,28 @@ class Groups extends React.Component {
     render() {
         if (this.state.selectedProducts) {
             var prods = this.state.selectedProducts
-            var totalPrice = 0
-            for (var i = 0; i < prods.length; i++) {
+            var  productsTotalPrice = 0
+            for (let i = 0; i < prods.length; i++) {
                 if (prods[i].quantity > 1) {
-                    totalPrice += (prods[i].quantity * Number(prods[i].price))
+                    productsTotalPrice += (prods[i].quantity * Number(prods[i].price))
                 } else if (prods[i].quantity < 2) {
-                    totalPrice += Number(prods[i].price)
+                    productsTotalPrice += Number(prods[i].price)
                 }
             }
         }
+        if (this.props.groups) {
+            var groups = this.props.groups
+            console.log(groups)
+            var groupsTotalPrice = 0
+            for (let i = 0; i < groups.length; i++) {
+                    groupsTotalPrice += Number(groups[i].totalPrice)
+                
+            }
+            console.log( groupsTotalPrice)
+        }
+
+        
+
         return (
             <main className="groups-main">
                 {this.state.deleteClicked ? <Alert accept={this.acceptDelete} decline={this.closeAlert}
@@ -83,7 +96,7 @@ class Groups extends React.Component {
                 {this.state.groupSelected ?
                     <Selected products={this.state.selectedProducts}
                         selectedGroup={this.state.selectedGroup}
-                        totalPrice={totalPrice}
+                        totalPrice={productsTotalPrice}
                         addNewGroupHandler={this.addNewGroupHandler}
                         closeSelectedGroup={this.closeSelectedGroupHandler}
                         editGroup={this.editGroupHandler}
@@ -98,7 +111,7 @@ class Groups extends React.Component {
                             selectedGroupHandler={this.selectedGroupHandler}
                             deleteGroupHandler={this.deleteGroupHandler}
                             editGroupHandler={this.editGroupHandler}
-                            totalPrice={totalPrice}
+                            totalPrice={productsTotalPrice}
                         />
                     </div>
                 </div>
@@ -109,7 +122,7 @@ class Groups extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        groups: state.groupsReducer.productGroups
+        groups: state.groupsReducer.groups
     }
 }
 

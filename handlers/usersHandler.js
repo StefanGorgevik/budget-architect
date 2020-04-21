@@ -59,7 +59,7 @@ const loginUser = (req, res) => {
                     email: data.email
                 }
                 var token = jwt.sign(tokenData, config.getConfig('jwt').key)
-                return res.status(200).send({jwt: token, id: data._id, name:tokenData.name, email: data.email})
+                return res.status(200).send({jwt: token, id: data._id, name:tokenData.name, email: data.email, income: data.income})
             }
             return res.status(400).send('Not found!')
         })

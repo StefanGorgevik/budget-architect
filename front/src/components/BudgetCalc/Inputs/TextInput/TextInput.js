@@ -12,7 +12,9 @@ function TextInput(props) {
                 className="inputs"
                 id={props.id}
                 placeholder={props.placeholder}
-                value={props.value} />
+                value={props.value} 
+                autoFocus 
+                />
         </div>
     )
 }

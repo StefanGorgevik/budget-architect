@@ -23,7 +23,8 @@
 
 .bcalc-bigger-inputs {
     display: flex;
-    width: 55%;
+    justify-content: space-between;
+    min-width: 55%;
 }
 
 .bcalc-smaller-inputs {

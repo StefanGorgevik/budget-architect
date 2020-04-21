@@ -80,6 +80,8 @@ class Account extends Component {
                             localStorage.setItem('name', res.data.name)
                             localStorage.setItem('user-id', res.data.id)
                             localStorage.setItem('userLogged', 'true')
+                            localStorage.setItem('mode', 'products')
+                            localStorage.setItem('income', res.data.income)
                             this.props.signInClickedAction(false)
                             window.location.reload()
                         })
@@ -89,8 +91,8 @@ class Account extends Component {
                 })
                 .catch(error => {
                     console.log(error)
-                    if(error.response.status === 500) {
-                        this.setState({userExists: true})
+                    if (error.response.status === 500) {
+                        this.setState({ userExists: true })
                     }
                 })
         } else {
@@ -138,7 +140,7 @@ class Account extends Component {
                         label='full name' placeholder="full name"
                         value={this.state.name} />
                     <NumberInput saveValue={this.saveInputValue}
-                        id="income" label='income' placeholder="income"
+                        id="income" label='monthly income' placeholder="monthly income"
                         value={this.state.income} />
                     <EmailInput saveValue={this.saveInputValue}
                         id="email" label='email' placeholder="email"
@@ -147,8 +149,8 @@ class Account extends Component {
                         <PasswordInput saveValue={this.saveInputValue}
                             id="password" label='password' placeholder="password"
                             value={this.state.password} /> :
-                        <p className="change-pw-p">Change password</p>}
-                        {this.state.userExists ? <p>User already exists!</p> : null }
+                       null}
+                    {this.state.userExists ? <p>User already exists!</p> : null}
                     <div className="btns-div">
                         <Button click={this.closeAccountHandler}
                             content='Close'

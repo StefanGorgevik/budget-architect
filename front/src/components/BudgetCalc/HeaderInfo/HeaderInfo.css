@@ -1,0 +1,21 @@
+.head-info-main {
+    display: flex;
+    width: 25%;
+    flex-direction:row;
+    justify-content: space-around;
+}
+
+.head-info-p {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: rgb(121, 117, 117);
+    margin: 0 auto;
+    font-size: 20px;
+}
+
+.head-info-p span {
+    font-size: 24px;
+    font-weight: 600px;
+    color: white;
+}

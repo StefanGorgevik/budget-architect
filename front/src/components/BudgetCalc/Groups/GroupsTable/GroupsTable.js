@@ -42,7 +42,6 @@ class GroupsTable extends React.Component {
     }
 
     render() {
-        console.log(this.props.groups)
         var groupsLength = 0;
         var groups = []
         if (this.props.groups) {
