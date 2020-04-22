@@ -9,9 +9,9 @@ const Group = mongoose.model(
     },{collection: 'groups'}) 
 )
 
-const getGroups = (id) => {
+const getGroups = (q, sort) => {
     return new Promise((success,fail) => {
-        Group.find({userID: id}, (err, data) => {
+        Group.find(q, {}, sort, (err, data) => {
             if(err) {
                 console.log(err)
                 return fail(err);

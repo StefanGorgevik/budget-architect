@@ -26,7 +26,7 @@ const saveProduct = (data) => {
 
 const getProducts = (q, sort) => {
     return new Promise((success, fail) => {
-        Product.find(q, {}, (err, data) => {
+        Product.find(q, {},(err, data) => {
             if (err) {
                 console.log(err)
                 return fail(err);

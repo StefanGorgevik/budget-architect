@@ -59,7 +59,6 @@ class Table extends React.Component {
             <div className="table-div">
                 {this.state.deleteProductClicked ? <Alert accept={this.deleteProduct} decline={this.closeAlert}
                     text="You are about to delete several items. Are you sure?" show={true} /> : null}
-                <h1>Products</h1>
                 {this.props.productsLoaded ? 
                     this.props.products.length !== 0 ? <>
                     <Thead properties={this.props.properties} />

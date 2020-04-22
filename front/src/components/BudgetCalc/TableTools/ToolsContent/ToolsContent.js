@@ -1,7 +1,6 @@
 import React from 'react'
 import './ToolsContent.css'
 import Button from '../../Button/Button'
-import SelectMode from '../SelectMode/SelectMode'
 import SelectSort from '../SelectSort/SelectSort'
 
 function ToolsContent(props) {
@@ -9,11 +8,12 @@ function ToolsContent(props) {
         <div className="table-tools-content">
             <h1>Tools</h1>
             <div className="filter-div">
-                <SelectMode selectModeHandler={props.selectModeHandler} />
-                <SelectSort selectFilterHandler={props.selectFilterHandler}
-                    sorts={props.sorts} />
+                <SelectSort selectSort={props.selectSort}
+                    sorts={props.sorts}
+                    mode={props.mode}
+                />
             </div>
-            <Button click={props.addNewGroupHandler}
+            <Button click={props.addNewGroupClicked}
                 content='Add a new group of products'
                 name='table-tools-btn' />
         </div>

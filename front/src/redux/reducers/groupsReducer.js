@@ -10,17 +10,15 @@ const initState = {
 export function groupsReducer(state = initState, action) {
     switch (action.type) {
         case "GET_GROUPS": {
-            var groups = action.payload;
-            var groupsProductsLength = 0;
-            var b = groups.map((group, i) => {
-                return (
-                    groupsProductsLength += group.products.length
-                )
-            });
+            return { ...state, groups: action.payload }
         }
-            return { ...state, groups: action.payload, groupsProductsNumber: groupsProductsLength }
 
-
+        case "GET_PRODUCTS_NUMBER": {
+            var groupsProductsLength = 0;
+            state.groups.map(group => groupsProductsLength += group.products.length
+            );
+            return { ...state, groupsProductsNumber: groupsProductsLength }
+        }
         case "ADD_NEW_GROUP_CLICKED": {
             return { ...state, addNewGroupClicked: action.payload }
         }

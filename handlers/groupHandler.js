@@ -1,15 +1,32 @@
 var groupModel = require('../models/groupModel')
 
 const getGroups = (req,res) => {
-    var id = req.user.id
-    groupModel.getGroups(id)
-    .then((data) => {
-        res.status(200).send(data)
-    })
-    .catch((err) => {
-        console.log(err)
-        res.status(500).send(err)
-    })
+    let q = {};
+    q.userID = req.user.id;
+    let sort = {};
+    if(req.query.date_from != undefined) {
+        if(q.date == undefined){
+            q.date = {};
+        }
+        q.date.$gte = new Date(Number(req.query.date_from));
+    }
+
+    if(req.query.date_to != undefined) {
+        if(q.date == undefined){
+            q.date = {};
+        }
+        q.date.$lte = new Date(Number(req.query.date_to));
+    }
+
+    
+    groupModel.getGroups(q)
+        .then(data => {
+            res.status(200).send(data);
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send(err);
+        })
 }
 
 const saveGroup = (req, res) => {

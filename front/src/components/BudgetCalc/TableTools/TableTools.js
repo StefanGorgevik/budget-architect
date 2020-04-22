@@ -8,9 +8,7 @@ class TableTools extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            hovered: false,
-            sorts: ["name", "type", "price", "quantity", "date"],
-            addNewGroupClicked: false
+            hovered: false
         }
     }
 
@@ -22,16 +20,6 @@ class TableTools extends React.Component {
         this.setState({ hovered: false })
     }   
 
-    addNewGroupHandler = () => {
-        this.props.addNewGroupClicked(!this.state.addNewGroupClicked)
-        localStorage.setItem('mode', 'groups')
-    }
-
-    selectModeHandler = (event) => {
-        localStorage.setItem('mode', event.target.value)
-        window.location.reload()
-    }
-
     render() {
         return (
             <>
@@ -39,16 +27,10 @@ class TableTools extends React.Component {
                     onMouseEnter={this.handleHover}
                     onMouseLeave={this.handleHoverLeave} >
                     {this.state.hovered ?
-                        <ToolsContent deleteProductsClicked={this.deleteProductsClicked}
-                            totalPrice={this.props.totalPrice}
-                            selectFilterHandler={this.props.selectFilterHandler}
-                            handleInputValue={this.handleInputValue}
-                            addTypeHandler={this.addTypeHandler}
-                            addTypeClickedHandler={this.addTypeClickedHandler}
-                            addTypeClicked={this.state.addTypeClicked}
-                            sorts={this.state.sorts}
-                            addNewGroupHandler={this.addNewGroupHandler}
-                            selectModeHandler={this.selectModeHandler}
+                        <ToolsContent 
+                            selectSort={this.props.selectSort}
+                            addNewGroupClicked={this.props.addNewGroupClicked}
+                            mode={this.props.mode}
                         />
                         :
                         <div className="before-hover-div">

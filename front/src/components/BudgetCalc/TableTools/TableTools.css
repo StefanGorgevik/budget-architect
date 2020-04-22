@@ -2,7 +2,7 @@
     width: 5%;
     border: 2px solid rgb(17, 12, 12);
     border-radius: 10px;
-    min-height: 100%;
+    height:50%;
     color: whitesmoke;
     background-color: #3b4141;
     background-image: url("../../../assets/images/backgrounds/budget-calc-background.png");

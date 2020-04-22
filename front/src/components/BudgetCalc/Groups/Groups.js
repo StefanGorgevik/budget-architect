@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Selected from './Selected/Selected'
 import Button from '../Button/Button'
 import GroupsTable from './GroupsTable/GroupsTable'
-import { addNewGroupClicked, deleteGroup, groupToEditAction, editGroupClickedAction } from '../../../redux/actions/groupsActions'
+import { addNewGroupClicked, deleteGroup, groupToEditAction, editGroupClickedAction, getProductsNumberAction } from '../../../redux/actions/groupsActions'
 import Alert from '../Alert/Alert'
 import axios from 'axios'
 const URL = 'http://localhost:8082/'
@@ -41,6 +41,7 @@ class Groups extends React.Component {
         })
             .then(res => {
                 this.props.deleteGroup(this.state.groupToDelete)
+                this.props.getProductsNumberAction()
                 this.setState({ deleteClicked: false, selected: [] })
             })
             .catch(err => {
@@ -77,12 +78,10 @@ class Groups extends React.Component {
         }
         if (this.props.groups) {
             var groups = this.props.groups
-            console.log(groups)
             var groupsTotalPrice = 0
             for (let i = 0; i < groups.length; i++) {
                     groupsTotalPrice += Number(groups[i].totalPrice)
             }
-            console.log( groupsTotalPrice)
         }
 
         
@@ -100,7 +99,6 @@ class Groups extends React.Component {
                         closeSelectedGroup={this.closeSelectedGroupHandler}
                         editGroup={this.editGroupHandler}
                     /> : null}
-                <h1>Groups</h1>
                 <Button click={this.addNewGroupHandler}
                     content='Add a new group of products'
                     name='table-tools-btn add-group-btn' />
@@ -130,7 +128,8 @@ function mapDispatchToProps(dispatch) {
         addNewGroupClicked: (bool) => dispatch(addNewGroupClicked(bool)),
         deleteGroup: (group) => dispatch(deleteGroup(group)),
         groupToEditAction: (group) => dispatch(groupToEditAction(group)),
-        editGroupClickedAction: (bool) => dispatch(editGroupClickedAction(bool))
+        editGroupClickedAction: (bool) => dispatch(editGroupClickedAction(bool)),
+        getProductsNumberAction: () => dispatch(getProductsNumberAction())
     }
 }
 

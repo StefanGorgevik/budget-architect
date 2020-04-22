@@ -3,7 +3,7 @@ import './NewGroup.css'
 import Inputs from '../Inputs-NG/Inputs'
 import Table from '../Table-NG/Table'
 import Button from '../../Button/Button'
-import { addNewGroupClicked, saveGroup, isGroupSavedAction, editGroupAction, groupToEditAction, editGroupClickedAction } from '../../../../redux/actions/groupsActions'
+import { addNewGroupClicked, saveGroup, isGroupSavedAction, editGroupAction, groupToEditAction, editGroupClickedAction, getProductsNumberAction } from '../../../../redux/actions/groupsActions'
 import Alert from '../../Alert/Alert'
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -104,6 +104,7 @@ class NewGroup extends React.Component {
                 .then(res => {
                     this.props.saveGroup(res.data)
                     this.props.isGroupSavedAction(true)
+                    this.props.getProductsNumberAction()
                     this.setState({ newGroupProducts: [], date: '' })
                     this.props.addNewGroupClicked(false)
                 })
@@ -140,14 +141,16 @@ class NewGroup extends React.Component {
                 }
             })
                 .then((res) => {
-                    this.props.editGroupAction(group)
                     this.setState({
                         error: false,
                         date: '',
                         newGroupProducts: [],
                         product: { name: '', price: 0, quantity: 1 }
                     })
+                    this.props.editGroupAction(group)
+                    this.props.getProductsNumberAction()
                     this.props.groupToEditAction({})
+                    this.props.editGroupClickedAction(false)
                     this.props.addNewGroupClicked(false)
                 })
                 .catch(err => {
@@ -160,13 +163,13 @@ class NewGroup extends React.Component {
     }
 
     closeNewGroup = () => {
-        this.props.groupToEditAction({})
-        this.props.editGroupClickedAction(false)
         this.setState({
             date: '',
             newGroupProducts: [],
             product: { name: '', price: 0, quantity: 1 }
         })
+        this.props.groupToEditAction({})
+        this.props.editGroupClickedAction(false)
         this.props.addNewGroupClicked(false)
     }
 
@@ -228,7 +231,8 @@ function mapDispatchToProps(dispatch) {
         saveGroup: (data) => dispatch(saveGroup(data)),
         editGroupAction: (data) => dispatch(editGroupAction(data)),
         groupToEditAction: (data) => dispatch(groupToEditAction(data)),
-        editGroupClickedAction: (bool) => dispatch(editGroupClickedAction(bool))
+        editGroupClickedAction: (bool) => dispatch(editGroupClickedAction(bool)),
+        getProductsNumberAction: (bool) => dispatch(getProductsNumberAction(bool))
     }
 }
 

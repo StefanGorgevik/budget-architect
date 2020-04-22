@@ -7,7 +7,7 @@ import Groups from '../../components/BudgetCalc/Groups/Groups'
 import { connect } from 'react-redux'
 import { signOutClickedAction } from '../../redux/actions/userActions'
 import { getProducts, sortProducts, productToEdit, saveProduct, editProduct, isProductSavedAction } from '../../redux/actions/productsActions'
-import { sortGroups } from '../../redux/actions/groupsActions'
+import { sortGroups, getGroupsAction,getProductsNumberAction } from '../../redux/actions/groupsActions'
 import Alert from '../../components/BudgetCalc/Alert/Alert'
 import HeaderInfo from '../../components/BudgetCalc/HeaderInfo/HeaderInfo'
 import NewGroup from '../../components/BudgetCalc/NewGroupForm/NewGroup/NewGroup'
@@ -15,7 +15,6 @@ import Account from '../../components/BudgetCalc/Account/Account'
 import SignIn from '../../components/BudgetCalc/SignIn/SignIn'
 import axios from 'axios'
 const URL = 'http://localhost:8081/'
-
 class BudgetCalc extends React.Component {
     constructor(props) {
         super(props)
@@ -34,7 +33,8 @@ class BudgetCalc extends React.Component {
             productsLoaded: false,
             selectedMonth: 'default',
             selectedYear: '2020',
-            isMonthSelected: false
+            isMonthSelected: false,
+            mode: 'products'
         }
     }
 
@@ -123,12 +123,11 @@ class BudgetCalc extends React.Component {
         }
     }
 
-    selectFilterHandler = (e) => {
-        var val = e.target.value
-        if (localStorage.getItem('mode') === 'products') {
-            this.props.sortProducts(val)
+    selectSortHandler = (e) => {
+        if (this.state.mode === 'products') {
+            this.props.sortProducts(e.target.value)
         } else {
-            this.props.sortGroups(val)
+            this.props.sortGroups(e.target.value)
         }
     }
 
@@ -141,9 +140,8 @@ class BudgetCalc extends React.Component {
     }
 
     getAllProductsHandler = () => {
-        this.setState({ isMonthSelected: false})
-
-        axios.get(URL + "app/v1/products/get/?sort=date:desc",
+        this.setState({ isMonthSelected: false })
+        axios.get(URL + "app/v1/products/get/",
             {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('jwt')}`
@@ -159,8 +157,26 @@ class BudgetCalc extends React.Component {
             })
     }
 
+    getAllGroupsHandler = () => {
+        axios.get(URL + 'app/v1/groups/get/', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+            }
+        })
+            .then(res => {
+                this.setState({  selectedMonth: 'default', groupsLoaded: true })
+                this.props.getGroupsAction(res.data)
+                this.props.getProductsNumberAction()
+            })
+            .catch(err => {
+                this.setState({ groupsLoaded: false })
+                console.log(err)
+            })
+    }
+
     selectFilterHandler = (event) => {
-        this.setState({ isMonthSelected: true})
+        var mode = this.state.mode
+        this.setState({ isMonthSelected: true })
         var year = this.state.selectedYear;
         var month
         if (event.target.value.length === 4) {
@@ -171,13 +187,22 @@ class BudgetCalc extends React.Component {
             this.setState({ selectedMonth: event.target.value })
         }
         if (event.target.value === 'default') {
-            this.getAllProductsHandler()
+            if (mode === 'products') {
+                this.getAllProductsHandler()
+            } else {
+                this.props.getProductsNumberAction()
+                this.getAllGroupsHandler()
+            }
         } else if (event.target.value !== 'default') {
             this.getFilteredProductsHandler(month, year)
         }
     }
 
     getFilteredProductsHandler = (mon, yr) => {
+        var mode = this.state.mode
+        var url;
+        mode === 'products' ? url = 'http://localhost:8081/': url = 'http://localhost:8082/'
+        console.log(url)
         var year = yr;
         var month = mon;
         month = parseInt(month) + 1
@@ -186,13 +211,18 @@ class BudgetCalc extends React.Component {
         }
         let dateFrom = new Date(`${Number(year)}-${month}-01 00:00:00.000`).getTime()
         let dateTo = new Date(`${Number(year)}-${month}-31 23:59:59.000`).getTime()
-        axios.get(`${URL}app/v1/products/get/?date_from=${dateFrom}&date_to=${dateTo}`, {
+        axios.get(`${url}app/v1/${mode}/get/?date_from=${dateFrom}&date_to=${dateTo}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
         })
             .then((res) => {
-                this.props.getProducts(res.data)
+                console.log(res)
+                if (mode === 'products') {
+                    this.props.getProducts(res.data)
+                } else {
+                    this.props.getGroupsAction(res.data)
+                }
             })
             .catch(error => {
                 console.log(error)
@@ -202,16 +232,28 @@ class BudgetCalc extends React.Component {
             })
     }
 
+    titleClickedHandler = () => {
+        if (this.state.mode === 'products') {
+            this.setState({ mode: 'groups' })
+        } else {
+            this.setState({ mode: 'products' })
+        }
+    }
+
+    addNewGroupHandler = () => {
+        this.setState({ mode: 'groups'})
+        this.props.addNewGroupClicked(true)
+    }
+
     render() {
         var isUserLogged = localStorage.getItem('userLogged') === 'true'
-
         var productsLength = 0;
         var totalPrice = 0;
         var products;
         if (this.props.products) {
             products = this.props.products
             productsLength = products.length
-            for (var i = 0; i < products.length; i++) {
+            for (let i = 0; i < products.length; i++) {
                 if (products[i].quantity >= 1) {
                     totalPrice += (products[i].quantity * Number(products[i].price))
                 } else if (products[i].quantity < 1) {
@@ -224,17 +266,17 @@ class BudgetCalc extends React.Component {
         var groupsTotalPrice = 0;
         if (this.props.groups) {
             groups = this.props.groups
-            for (var i = 0; i < groups.length; i++) {
+            for (let i = 0; i < groups.length; i++) {
                 groupsTotalPrice += Number(groups[i].totalPrice)
             }
         }
-        
-       
+
+
         return (
             <main className="budget-calc-main">
                 <HeaderInfo totalPrice={totalPrice}
                     productsLength={productsLength}
-                    getAllProducts={this.getAllProductsHandler}
+                    getAll={this.state.mode === 'products' ? this.getAllProductsHandler : this.getAllGroupsHandler}
                     selectFilter={this.selectFilterHandler}
                     selectedMonth={this.state.selectedMonth}
                     selectedYear={this.state.selectedYear}
@@ -242,6 +284,7 @@ class BudgetCalc extends React.Component {
                     groupsLength={this.props.groups.length}
                     groupsProductsNumber={this.props.groupsProductsNumber}
                     isMonthSelected={this.state.isMonthSelected}
+                    mode={this.state.mode}
                 />
                 {this.props.accountClicked ? <Account /> : null}
                 {this.props.signInClicked && !this.props.isUserLogged ? <SignIn /> : null}
@@ -252,8 +295,14 @@ class BudgetCalc extends React.Component {
                 {this.props.signOutClicked ? <Alert accept={this.signOutHandler} decline={this.declineSignOutHandler}
                     text="Your are about to sign out! Are you sure?" show={true}
                 /> : null}
+                <div className="bc-titles-div">
+                    <h1 onClick={this.titleClickedHandler} 
+                    className={this.state.mode === 'products' ? "content-title-active content-title" : 'content-title'}>products </h1>
+                    <h1 onClick={this.titleClickedHandler} 
+                    className={this.state.mode === 'groups' ? "content-title-active content-title" : 'content-title'}>groups</h1>
+                </div>
                 {isUserLogged ? <>
-                    {localStorage.getItem('mode') === "products" ?
+                    {this.state.mode === "products" ?
                         <ProductInputs
                             handleInputValue={this.handleInputValue}
                             product={this.state.product}
@@ -263,7 +312,7 @@ class BudgetCalc extends React.Component {
                             types={this.state.types}
                         /> : null}
                     <div className="budget-calc-content-div">
-                        {localStorage.getItem('mode') === "products" ?
+                        {this.state.mode === "products" ?
                             <Table
                                 getAllProducts={this.getAllProductsHandler}
                                 getFilteredProductsHandler={this.getFilteredProductsHandler}
@@ -274,9 +323,10 @@ class BudgetCalc extends React.Component {
                                 handleCheckboxChange={this.handleCheckboxChange}
                                 editClicked={this.state.editClicked}
                             /> : <Groups />}
-                        <TableTools
+                        <TableTools mode={this.state.mode}
                             deleteProducts={this.deleteProducts}
-                            selectFilterHandler={this.selectFilterHandler}
+                            selectSort={this.selectSortHandler}
+                            addNewGroupClicked={this.addNewGroupHandler}
                         />
                     </div>
                 </> :
@@ -303,13 +353,15 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         getProducts: (products) => dispatch(getProducts(products)),
+        getGroupsAction: (groups) => dispatch(getGroupsAction(groups)),
         saveProduct: (prod) => dispatch(saveProduct(prod)),
         productToEdit: (id) => dispatch(productToEdit(id)),
         editProduct: (prod) => dispatch(editProduct(prod)),
         sortProducts: (val) => dispatch(sortProducts(val)),
         sortGroups: (val) => dispatch(sortGroups(val)),
         signOutClickedAction: (bool) => dispatch(signOutClickedAction(bool)),
-        isProductSavedAction: (bool) => dispatch(isProductSavedAction(bool))
+        isProductSavedAction: (bool) => dispatch(isProductSavedAction(bool)),
+        getProductsNumberAction: (bool) => dispatch(getProductsNumberAction(bool))
     }
 }
 

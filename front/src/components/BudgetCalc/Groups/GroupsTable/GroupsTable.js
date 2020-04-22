@@ -3,14 +3,14 @@ import './GroupsTable.css'
 import Button from '../../Button/Button'
 import Loading from '../../Loading/Loading'
 import { connect } from 'react-redux'
-import { getGroupsAction, isGroupSavedAction } from '../../../../redux/actions/groupsActions'
+import { getGroupsAction, isGroupSavedAction, getProductsNumberAction } from '../../../../redux/actions/groupsActions'
 import axios from 'axios'
 const URL = 'http://localhost:8082/'
 class GroupsTable extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            groupsLoaded: false,
+            groupsLoaded: false
         }
     }
 
@@ -26,7 +26,7 @@ class GroupsTable extends React.Component {
     }
 
     getAllGroupsHandler = () => {
-        axios.get(URL + 'app/v1/groups/get', {
+        axios.get(URL + 'app/v1/groups/get/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
@@ -34,6 +34,7 @@ class GroupsTable extends React.Component {
             .then(res => {
                 this.setState({ groupsLoaded: true })
                 this.props.getGroupsAction(res.data)
+                this.props.getProductsNumberAction()
             })
             .catch(err => {
                 this.setState({ groupsLoaded: false })
@@ -104,7 +105,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         getGroupsAction: (groups) => dispatch(getGroupsAction(groups)),
-        isGroupSavedAction: (bool) => dispatch(isGroupSavedAction(bool))
+        isGroupSavedAction: (bool) => dispatch(isGroupSavedAction(bool)),
+        getProductsNumberAction: () => dispatch(getProductsNumberAction()),
         }
 }
 

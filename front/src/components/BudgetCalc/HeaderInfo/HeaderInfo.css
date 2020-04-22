@@ -2,10 +2,10 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 97%;
+    width: 99%;
     height: 75px;
     margin: 5px auto;
-    border: 2px solid black;
+    border: 1px solid rgba(0, 0, 0, 0.767);
     border-radius: 10px;
     background-color: rgba(15, 15, 15, 0.192);
 }
@@ -16,9 +16,40 @@
     font-size: 24px;
     color: rgb(233, 221, 221);
     letter-spacing: 2px;
-    border-radius: 20px;
     width:30%;
     margin-right: 10px;
+}
+
+.products-info-div, 
+.groups-info-div,
+.total-info-div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    border-right:2px solid black;
+    border-left:2px solid black;
+    border-radius: 10%;
+    padding: 0;
+    margin: 0;
+}
+
+.products-info-div .head-info-p,
+.total-info-div .head-info-p,
+.groups-info-div .head-info-p {
+    width: 100%;
+}
+
+.groups-info-div {
+    width: 30%;
+}
+
+.products-info-div {
+    width: 25%;
+}
+
+.total-info-div {
+    width: 25%;
 }
 
 .danger-p span {
@@ -34,10 +65,11 @@
 .table-info-selects {
     display: flex;
     align-items: center;
-    min-width: 25%;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+    min-width: 20%;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
     height: 100%;
+    border-radius: 10%;
 }
 
 .label-p {
