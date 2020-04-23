@@ -191,8 +191,8 @@ class BudgetCalc extends React.Component {
             this.setState({ selectedMonth: event.target.value })
         }
         if (event.target.value === 'default') {
-                this.getAllProductsHandler()
-                this.getAllGroupsHandler()
+            this.getAllProductsHandler()
+            this.getAllGroupsHandler()
         } else if (event.target.value !== 'default') {
             this.getFilteredProductsHandler(month, year)
         }
@@ -246,7 +246,7 @@ class BudgetCalc extends React.Component {
 
     seeAllHandler = () => {
         this.getAllProductsHandler()
-         this.getAllGroupsHandler()
+        this.getAllGroupsHandler()
     }
 
 
@@ -292,6 +292,7 @@ class BudgetCalc extends React.Component {
                     groupsProductsNumber={groupProductsLength}
                     isMonthSelected={this.state.isMonthSelected}
                     mode={this.state.mode}
+                    isUserLogged={isUserLogged}
                 />
                 {this.props.accountClicked ? <Account /> : null}
                 {this.props.signInClicked && !this.props.isUserLogged ? <SignIn /> : null}
@@ -302,13 +303,14 @@ class BudgetCalc extends React.Component {
                 {this.props.signOutClicked ? <Alert accept={this.signOutHandler} decline={this.declineSignOutHandler}
                     text="Your are about to sign out! Are you sure?" show={true}
                 /> : null}
-                <div className="bc-titles-div">
-                    <h1 onClick={this.titleClickedHandler}
-                        className={this.state.mode === 'products' ? "content-title-active content-title" : 'content-title'}>products </h1>
-                    <h1 onClick={this.titleClickedHandler}
-                        className={this.state.mode === 'groups' ? "content-title-active content-title" : 'content-title'}>groups</h1>
-                </div>
                 {isUserLogged ? <>
+
+                    <div className="bc-titles-div">
+                        <h1 onClick={this.titleClickedHandler}
+                            className={this.state.mode === 'products' ? "content-title-active content-title" : 'content-title'}>products </h1>
+                        <h1 onClick={this.titleClickedHandler}
+                            className={this.state.mode === 'groups' ? "content-title-active content-title" : 'content-title'}>groups</h1>
+                    </div>
                     {this.state.mode === "products" ?
                         <ProductInputs
                             handleInputValue={this.handleInputValue}
@@ -338,14 +340,12 @@ class BudgetCalc extends React.Component {
                             addNewGroupClicked={this.addNewGroupHandler}
                         />
                     </div>
-                </> :
-                    <div>
-                        <h1 className="welcome-h1">Please sign in or register!</h1>
-                    </div>}
+                </> : null }
             </main>
         )
     }
 }
+
 
 function mapStateToProps(state) {
     return {
