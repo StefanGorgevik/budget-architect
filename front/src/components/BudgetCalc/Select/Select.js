@@ -6,7 +6,7 @@ function Select(props) {
         <div className="select-div">
             <select name="select" className="select" onChange={props.selectOption} value={props.selectedMonth}>
             {props.label === 'month' ? 
-                        <option className="option" value='default' defaultChecked >All products</option>: null}
+                        <option className="option" value='default' defaultChecked >All items</option>: null}
                 {props.options.map((option, i) => {
                     return <option className="option" key={`option${i}`}
                         value={i}>{option}</option>

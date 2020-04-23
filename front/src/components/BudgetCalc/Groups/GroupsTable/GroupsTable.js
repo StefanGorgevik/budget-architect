@@ -3,9 +3,7 @@ import './GroupsTable.css'
 import Button from '../../Button/Button'
 import Loading from '../../Loading/Loading'
 import { connect } from 'react-redux'
-import { getGroupsAction, isGroupSavedAction, getProductsNumberAction } from '../../../../redux/actions/groupsActions'
-import axios from 'axios'
-const URL = 'http://localhost:8082/'
+import { getGroupsAction, isGroupSavedAction } from '../../../../redux/actions/groupsActions'
 class GroupsTable extends React.Component {
     constructor(props) {
         super(props)
@@ -16,30 +14,9 @@ class GroupsTable extends React.Component {
 
     componentDidUpdate() {
         if (this.props.isGroupSaved) {
-            this.getAllGroupsHandler()
+            this.props.getAllGroups()
             this.props.isGroupSavedAction(false)
         }
-    }
-
-    componentDidMount() {
-        this.getAllGroupsHandler()
-    }
-
-    getAllGroupsHandler = () => {
-        axios.get(URL + 'app/v1/groups/get/', {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-            }
-        })
-            .then(res => {
-                this.setState({ groupsLoaded: true })
-                this.props.getGroupsAction(res.data)
-                this.props.getProductsNumberAction()
-            })
-            .catch(err => {
-                this.setState({ groupsLoaded: false })
-                console.log(err)
-            })
     }
 
     render() {
@@ -73,7 +50,7 @@ class GroupsTable extends React.Component {
         }
         return (
             <div>
-                {this.state.groupsLoaded ?
+                {this.props.groupsLoaded ?
                     groupsLength !== 0 ?
                         <table className="groups-table">
                             <thead>
@@ -105,8 +82,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         getGroupsAction: (groups) => dispatch(getGroupsAction(groups)),
-        isGroupSavedAction: (bool) => dispatch(isGroupSavedAction(bool)),
-        getProductsNumberAction: () => dispatch(getProductsNumberAction()),
+        isGroupSavedAction: (bool) => dispatch(isGroupSavedAction(bool))
         }
 }
 

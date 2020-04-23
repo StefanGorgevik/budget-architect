@@ -49,7 +49,21 @@
 }
 
 .total-info-div {
-    width: 25%;
+    width: 35%;
+}
+
+.total-info-div p{
+    margin-right: 0;
+}
+.total-info-div .budget-p{
+    margin:0 auto;
+
+    width:65%;
+}
+.total-info-div .remaining-p{
+    margin:0 auto;
+
+    width:35%;
 }
 
 .danger-p span {

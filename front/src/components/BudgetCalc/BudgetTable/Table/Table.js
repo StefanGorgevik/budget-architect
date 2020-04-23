@@ -13,7 +13,6 @@ class Table extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            products: [],
             deleteProductClicked: false,
             productToDelete: ''
         }
@@ -24,10 +23,6 @@ class Table extends React.Component {
             this.props.isProductSavedAction(false)
         }
     }
-    componentDidMount() {
-        this.props.getAllProducts()
-    }
-
 
     deleteProductClicked = (id) => {
         this.setState({ deleteProductClicked: true, productToDelete: id })
@@ -58,7 +53,7 @@ class Table extends React.Component {
         return (
             <div className="table-div">
                 {this.state.deleteProductClicked ? <Alert accept={this.deleteProduct} decline={this.closeAlert}
-                    text="You are about to delete several items. Are you sure?" show={true} /> : null}
+                    text="You are about to delete a product. Are you sure?" show={true} /> : null}
                 {this.props.productsLoaded ? 
                     this.props.products.length !== 0 ? <>
                     <Thead properties={this.props.properties} />

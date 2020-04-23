@@ -12,9 +12,9 @@ function HeaderInfo(props) {
     return (
         <main className="head-info-main">
             <div className="total-info-div">
-                <p className="head-info-p">Budget <span>{localStorage.getItem('income')}</span></p>
+                <p className="head-info-p budget-p">Monthly Budget <span>{localStorage.getItem('income')}</span></p>
                 {props.isMonthSelected ?
-                    <p className={surplus < 0 ? "head-info-p danger-p" : 'head-info-p'}>Remaining <span>{surplus}</span></p>
+                    <p className='head-info-p remaining-p'>Remaining <span>{surplus}</span></p>
                     : null}
             </div>
             <div className="products-info-div">

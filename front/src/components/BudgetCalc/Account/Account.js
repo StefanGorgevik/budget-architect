@@ -23,6 +23,14 @@ class Account extends Component {
             userExists: false
         }
     }
+
+    componentDidMount() {
+        var isUserLogged = localStorage.getItem('userLogged') === 'true'
+        if (isUserLogged) {
+            this.getUserToEdit()
+        }
+    }
+
     getUserToEdit = () => {
         var id = localStorage.getItem('user-id')
         axios.get(`${URL}app/v1/auth/getuser/${id}`, {
@@ -42,13 +50,6 @@ class Account extends Component {
             .catch(err => {
                 console.log(err)
             })
-    }
-
-    componentDidMount() {
-        var isUserLogged = localStorage.getItem('userLogged') === 'true'
-        if (isUserLogged) {
-            this.getUserToEdit()
-        }
     }
 
     saveInputValue = (event) => {
@@ -113,6 +114,7 @@ class Account extends Component {
         })
             .then((res) => {
                 console.log(res)
+                localStorage.setItem('income', this.state.income)
                 this.props.accountClickedAction(false)
             })
             .catch(err => {

@@ -13,7 +13,6 @@ function TextInput(props) {
                 id={props.id}
                 placeholder={props.placeholder}
                 value={props.value} 
-                autoFocus 
                 />
         </div>
     )

@@ -13,12 +13,7 @@ export function groupsReducer(state = initState, action) {
             return { ...state, groups: action.payload }
         }
 
-        case "GET_PRODUCTS_NUMBER": {
-            var groupsProductsLength = 0;
-            state.groups.map(group => groupsProductsLength += group.products.length
-            );
-            return { ...state, groupsProductsNumber: groupsProductsLength }
-        }
+      
         case "ADD_NEW_GROUP_CLICKED": {
             return { ...state, addNewGroupClicked: action.payload }
         }

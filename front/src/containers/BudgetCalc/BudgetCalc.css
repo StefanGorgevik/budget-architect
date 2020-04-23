@@ -27,7 +27,8 @@ background-image: url("https://www.transparenttextures.com/patterns/broken-noise
     justify-content: center;
     align-items: center;
     min-height: 10%;
-    width: 50%;
+    width: 40%;
+    margin-right: 150px;
 }
 
 .content-title {

@@ -60,10 +60,3 @@ export function editGroupAction(group) {
     }
 }
 
-export function getProductsNumberAction() {
-    return {
-        type: "GET_PRODUCTS_NUMBER"
-    }
-}
-
-

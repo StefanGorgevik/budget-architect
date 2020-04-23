@@ -3,7 +3,6 @@ import './SelectSort.css'
 
 function SelectSort(props) {
     var mode = props.mode
-    console.log(mode)
     var sorts;
     if (mode === 'groups') {
         sorts = ["date", 'totalPrice']
