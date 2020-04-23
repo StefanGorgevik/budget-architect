@@ -14,7 +14,7 @@ import NewGroup from '../../components/BudgetCalc/NewGroupForm/NewGroup/NewGroup
 import Account from '../../components/BudgetCalc/Account/Account'
 import SignIn from '../../components/BudgetCalc/SignIn/SignIn'
 import axios from 'axios'
-const URL = 'http://localhost:8081/'
+const URL = 'https://budgetarchitect.herokuapp.com/'
 class BudgetCalc extends React.Component {
     constructor(props) {
         super(props)
@@ -164,7 +164,7 @@ class BudgetCalc extends React.Component {
     }
 
     getAllGroupsHandler = () => {
-        axios.get('http://localhost:8082/app/v1/groups/get/', {
+        axios.get(URL + 'app/v1/groups/get/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
@@ -212,8 +212,8 @@ class BudgetCalc extends React.Component {
         }
         let dateFrom = new Date(`${Number(year)}-${month}-01 00:00:00.000`).getTime()
         let dateTo = new Date(`${Number(year)}-${month}-31 23:59:59.000`).getTime()
-        let one = `http://localhost:8081/app/v1/products/get/?date_from=${dateFrom}&date_to=${dateTo}`
-        let two = `http://localhost:8082/app/v1/groups/get/?date_from=${dateFrom}&date_to=${dateTo}`
+        let one = `${URL}app/v1/products/get/?date_from=${dateFrom}&date_to=${dateTo}`
+        let two = `${URL}app/v1/groups/get/?date_from=${dateFrom}&date_to=${dateTo}`
         const requestOne = axios.get(one, options);
         const requestTwo = axios.get(two, options)
         axios.all([requestOne, requestTwo])

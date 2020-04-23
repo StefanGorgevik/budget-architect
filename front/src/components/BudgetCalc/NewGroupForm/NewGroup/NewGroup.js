@@ -7,7 +7,7 @@ import { addNewGroupClicked, saveGroup, isGroupSavedAction, editGroupAction, gro
 import Alert from '../../Alert/Alert'
 import axios from 'axios'
 import { connect } from 'react-redux'
-const URL = 'http://localhost:8082/'
+const URL = 'https://budgetarchitect.herokuapp.com/'
 
 class NewGroup extends React.Component {
     constructor(props) {

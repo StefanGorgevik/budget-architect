@@ -16,8 +16,6 @@ function Header(props) {
 
     var isUserLogged = localStorage.getItem('userLogged') === 'true'
 
-    
-
     return (
         <nav className="header-main">
             <h1 className="header-title">Budget Architect</h1>

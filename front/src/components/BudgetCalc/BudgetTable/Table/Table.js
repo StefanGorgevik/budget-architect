@@ -8,7 +8,7 @@ import { signInClickedAction } from '../../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import Alert from '../../Alert/Alert'
 import Loading from '../../Loading/Loading'
-const URL = 'http://localhost:8081/'
+const URL = 'https://budgetarchitect.herokuapp.com/'
 class Table extends React.Component {
     constructor(props) {
         super(props)

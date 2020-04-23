@@ -7,7 +7,7 @@ import Button from '../Button/Button'
 import EmailInput from '../Inputs/EmailInput/EmailInput'
 import PasswordInput from '../Inputs/PasswordInput/PasswordInput'
 import Alert from '../Alert/Alert'
-const URL = 'http://localhost:8080/'
+const URL = 'https://budgetarchitect.herokuapp.com/'
 
 class SignIn extends Component {
     constructor(props) {

@@ -9,7 +9,7 @@ import { accountClickedAction, signInClickedAction } from '../../../redux/action
 import { connect } from 'react-redux'
 import axios from 'axios'
 import Alert from '../Alert/Alert'
-const URL = 'http://localhost:8080/'
+const URL = 'https://budgetarchitect.herokuapp.com/'
 
 class Account extends Component {
     constructor(props) {

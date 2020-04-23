@@ -7,7 +7,7 @@ import GroupsTable from './GroupsTable/GroupsTable'
 import { addNewGroupClicked, deleteGroup, groupToEditAction, editGroupClickedAction } from '../../../redux/actions/groupsActions'
 import Alert from '../Alert/Alert'
 import axios from 'axios'
-const URL = 'http://localhost:8082/'
+const URL = 'https://budgetarchitect.herokuapp.com/'
 class Groups extends React.Component {
     constructor(props) {
         super(props)
