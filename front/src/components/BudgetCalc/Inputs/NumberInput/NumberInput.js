@@ -5,7 +5,7 @@ import '../inputs.css'
 
 function NumberInput(props) {
     return (
-        <div className='number-input-div'>
+        <div className="input-div">
             <Label id={props.id} label={props.label} />
             <input
                 onChange={props.saveValue}

@@ -301,15 +301,21 @@ class BudgetCalc extends React.Component {
                     text="Please fill up every field!"
                 /> : null}
                 {this.props.signOutClicked ? <Alert accept={this.signOutHandler} decline={this.declineSignOutHandler}
-                    text="Your are about to sign out! Are you sure?" show={true}
+                    text="Your are about to sign out! Are you sure?" show={true} title="Signing out"
                 /> : null}
                 {isUserLogged ? <>
-
                     <div className="bc-titles-div">
-                        <h1 onClick={this.titleClickedHandler}
-                            className={this.state.mode === 'products' ? "content-title-active content-title" : 'content-title'}>products </h1>
-                        <h1 onClick={this.titleClickedHandler}
-                            className={this.state.mode === 'groups' ? "content-title-active content-title" : 'content-title'}>groups</h1>
+                        <div className="bc-h1-div">
+                            <h1 onClick={this.titleClickedHandler}
+                                className={this.state.mode === 'products' ? "content-title-active content-title" : 'content-title'}>products </h1>
+                            <h1 onClick={this.titleClickedHandler}
+                                className={this.state.mode === 'groups' ? "content-title-active content-title" : 'content-title'}>groups</h1>
+                        </div>
+                        <TableTools mode={this.state.mode}
+                            deleteProducts={this.deleteProducts}
+                            selectSort={this.selectSortHandler}
+                            addNewGroupClicked={this.addNewGroupHandler}
+                        />
                     </div>
                     {this.state.mode === "products" ?
                         <ProductInputs
@@ -334,13 +340,9 @@ class BudgetCalc extends React.Component {
                             /> : <Groups groupsLoaded={this.state.groupsLoaded}
                                 getAllGroups={this.getAllGroupsHandler}
                             />}
-                        <TableTools mode={this.state.mode}
-                            deleteProducts={this.deleteProducts}
-                            selectSort={this.selectSortHandler}
-                            addNewGroupClicked={this.addNewGroupHandler}
-                        />
+
                     </div>
-                </> : null }
+                </> : null}
             </main>
         )
     }

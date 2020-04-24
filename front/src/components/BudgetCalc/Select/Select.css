@@ -27,3 +27,14 @@
     color:#fff;
     text-shadow:0 1px 0 rgba(0,0,0,0.4);
 }
+
+@media screen and (max-width: 700px) {
+    .select-div {
+        margin:0;
+        width: 20%;
+    }
+    .select {
+        font-size: 15px;
+        min-width: 60%;
+    }
+}

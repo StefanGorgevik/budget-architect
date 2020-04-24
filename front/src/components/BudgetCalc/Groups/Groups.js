@@ -80,6 +80,7 @@ class Groups extends React.Component {
             <main className="groups-main">
                 {this.state.deleteClicked ? <Alert accept={this.acceptDelete} decline={this.closeAlert}
                     text="You are about to delete a group of products. Are you sure?" show={true}
+                    title="Delete"
                 /> : null}
                 {this.state.groupSelected ?
                     <Selected products={this.state.selectedProducts}

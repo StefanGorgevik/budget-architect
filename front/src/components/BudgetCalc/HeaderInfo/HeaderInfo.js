@@ -41,10 +41,10 @@ function HeaderInfo(props) {
                         selectedMonth={props.selectedMonth} label='month' value={props.selectedMonth} />
                     <Select options={years} selectOption={props.selectFilter}
                         selectedMonth={props.selectedMonth} label='year' />
-                </div>
-                <Button click={props.getAll}
+                         <Button click={props.getAll}
                     content='See all'
-                    name='table-info-btn' />
+                    name='table-info-btn hinfo-btn' />
+                </div>
             </> : <div>
                     <h1 className="welcome-h1">Please sign in or register to see your products!</h1>
                 </div>

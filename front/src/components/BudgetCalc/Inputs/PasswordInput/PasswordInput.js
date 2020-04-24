@@ -5,7 +5,7 @@ import Label from '../../Label/Label'
 
 function PasswordInput(props) {
     return (
-        <div>
+        <div className="input-div">
             <Label id={props.id} label={props.label} />
             <input
                 onChange={props.saveValue}

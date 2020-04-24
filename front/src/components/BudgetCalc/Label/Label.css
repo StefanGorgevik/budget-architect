@@ -1,7 +1,14 @@
 .input-label {
     height: 35px;
-    min-width: 25%;
+    min-width: 30%;
     font-size: 24px;
     text-transform: capitalize;
     color: whitesmoke;
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 700px) {
+    .input-label {
+        font-size: 20px;
+    }
 }

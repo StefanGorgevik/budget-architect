@@ -3,6 +3,7 @@ import './NewGroup.css'
 import Inputs from '../Inputs-NG/Inputs'
 import Table from '../Table-NG/Table'
 import Button from '../../Button/Button'
+import DateInput from '../../Inputs/DateInput/DateInput'
 import { addNewGroupClicked, saveGroup, isGroupSavedAction, editGroupAction, groupToEditAction, editGroupClickedAction } from '../../../../redux/actions/groupsActions'
 import Alert from '../../Alert/Alert'
 import axios from 'axios'
@@ -183,11 +184,13 @@ class NewGroup extends React.Component {
                 <div className="ng-div">
                     <div className='ng-left-side'>
                         <h3>New group of products</h3>
+                        <div className="ng-date-div">
+                            <DateInput saveValue={this.handleGroupDateInputValue}
+                                id="date" label='date' value={this.state.date} />
+                        </div>
                         <Inputs addProductToGroup={this.addProductToGroup}
-                            handleGroupDateInputValue={this.handleGroupDateInputValue}
                             handleProductInputValue={this.handleProductInputValue}
                             product={this.state.product}
-                            dateValue={this.state.date}
                         />
                         <div className="ng-btns-div">
                             <Button click={this.closeNewGroup}

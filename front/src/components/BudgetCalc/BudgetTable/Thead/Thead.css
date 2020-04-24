@@ -43,3 +43,9 @@
     padding-right:110px;
     min-width: 20%;
 }
+
+@media screen and (max-width: 700px) {
+    .top-table ul li{ 
+        font-size: 20px;
+    }
+}

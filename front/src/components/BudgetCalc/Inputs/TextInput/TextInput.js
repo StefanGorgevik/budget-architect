@@ -5,7 +5,7 @@ import Label from '../../Label/Label'
 
 function TextInput(props) {
     return (
-        <div className="text-input-div">
+        <div className="input-div">
             <Label id={props.id} label={props.label} />
             <input type='text'
                 onChange={props.saveValue}

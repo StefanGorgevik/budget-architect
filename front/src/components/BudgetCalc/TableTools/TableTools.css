@@ -1,18 +1,22 @@
 .table-tools-div {
-    width: 5%;
     border: 2px solid rgb(17, 12, 12);
     border-radius: 10px;
-    height:50%;
+    height:100%;
     color: whitesmoke;
     background-color: #3b4141;
     background-image: url("../../../assets/images/backgrounds/budget-calc-background.png");
     cursor: pointer;
     transition: 3s;
+    width: 10%;
+    display: flex;
 }
 
 .table-tools-div-active {
-    width: 30%;
+    width: 35%;
     transition: 1s;
+    padding: 0;
+    margin: 0;
+    height: 100%;
 }
 
 .table-tools-div h1 {
@@ -20,15 +24,6 @@
     margin: 10px auto;
     border-bottom: 8px double black;
     transition: 1.5s;
-}
-
-.table-tools-content {
-    display: flex;
-    min-width: 80%;
-    height: 100%;
-    margin: 0 20px;
-    flex-direction: column;
-    align-items: center;
 }
 
 .before-hover-div {
@@ -42,7 +37,16 @@
 }
 
 .fa-tools {
-    font-size: 60px;
+    font-size: 40px;
     margin: 0 auto;
     color: rgb(245, 237, 237);
+}
+
+@media screen and (max-width: 700px) {
+    .table-tools-div-active {
+        width: 100%;
+    }
+    .fa-tools {
+        font-size: 30px;
+    }
 }

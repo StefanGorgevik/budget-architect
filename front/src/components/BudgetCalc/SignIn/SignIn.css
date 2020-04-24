@@ -14,7 +14,7 @@
 
 .sign-in-div {
     min-width: 25%;
-    min-height: 35%;
+    min-height: 40%;
     background-color:rgb(17, 12, 12);
     padding: 20px;
     border: 0.5px solid whitesmoke;
@@ -47,6 +47,24 @@
 }
 
 .no-acc-p {
+    height: 10%;
     font-size: 18px;
     color: rgb(82, 80, 80)
+}
+
+.sign-in-inputs-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.sign-in-inputs-div div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+@media screen and (max-width: 700px) {
+    .sign-in-div {
+        width: 100%;
+    }
 }

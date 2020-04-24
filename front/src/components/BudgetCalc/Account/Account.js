@@ -138,20 +138,22 @@ class Account extends Component {
                 {this.state.error ? <Alert accept={this.closeErrorAlert} text="Please fill up every field!" show={false} /> : null}
                 <div className="account-div">
                     <h1>{isUserLogged ? "Account" : 'Register'}</h1>
-                    <TextInput saveValue={this.saveInputValue} id="name"
-                        label='full name' placeholder="full name"
-                        value={this.state.name} />
-                    <NumberInput saveValue={this.saveInputValue}
-                        id="income" label='monthly income' placeholder="monthly income"
-                        value={this.state.income} />
-                    <EmailInput saveValue={this.saveInputValue}
-                        id="email" label='email' placeholder="email"
-                        value={this.state.email} />
-                    {!isUserLogged ?
-                        <PasswordInput saveValue={this.saveInputValue}
-                            id="password" label='password' placeholder="password"
-                            value={this.state.password} /> :
-                       null}
+                    <div className="account-inputs">
+                        <TextInput saveValue={this.saveInputValue} id="name"
+                            label='full name' placeholder="full name"
+                            value={this.state.name} />
+                        <NumberInput saveValue={this.saveInputValue}
+                            id="income" label='monthly income' placeholder="monthly income"
+                            value={this.state.income} />
+                        <EmailInput saveValue={this.saveInputValue}
+                            id="email" label='email' placeholder="email"
+                            value={this.state.email} />
+                        {!isUserLogged ?
+                            <PasswordInput saveValue={this.saveInputValue}
+                                id="password" label='password' placeholder="password"
+                                value={this.state.password} /> :
+                            null}
+                    </div>
                     {this.state.userExists ? <p>User already exists!</p> : null}
                     <div className="btns-div">
                         <Button click={this.closeAccountHandler}

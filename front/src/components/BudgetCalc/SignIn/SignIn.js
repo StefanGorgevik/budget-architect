@@ -51,8 +51,8 @@ class SignIn extends Component {
                 .catch(error => {
                     console.log(error)
                     this.setState({ error: true })
-                    if(error.response.status === 500) {
-                        this.setState({userNotFound: true})
+                    if (error.response.status === 500) {
+                        this.setState({ userNotFound: true })
                     }
                 })
         }
@@ -76,8 +76,10 @@ class SignIn extends Component {
                     : null}
                 <div className="sign-in-div">
                     <h1>sign in</h1>
-                    <EmailInput saveValue={this.saveInputValue} id="email" label='email' placeholder="email" />
-                    <PasswordInput saveValue={this.saveInputValue} id="password" label='password' placeholder="password" />
+                    <div className="sign-in-inputs-div">
+                        <EmailInput saveValue={this.saveInputValue} id="email" label='email' placeholder="email" />
+                        <PasswordInput saveValue={this.saveInputValue} id="password" label='password' placeholder="password" />
+                    </div>
                     <div className="btns-div">
                         <Button click={this.closeSignInHandler}
                             content='Close'
@@ -86,9 +88,9 @@ class SignIn extends Component {
                             content='Sign In'
                             name='ng-btn' />
                     </div>
-                    <p className="no-acc-p">To register, click 
+                    <p className="no-acc-p">To register, click
                         <span onClick={this.choseRegisterHandler} className="here-span">here</span>
-                        </p>
+                    </p>
                 </div>
             </div>
         )

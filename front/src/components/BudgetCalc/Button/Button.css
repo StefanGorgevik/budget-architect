@@ -13,7 +13,7 @@
     height: 50px;
     font-family: 'Tomorrow', sans-serif;
     border-radius: 5px;
-    border: 2px solid black;
+    border: 2px solid rgb(31, 29, 29);
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.057);
     color: white;
@@ -21,6 +21,8 @@
 
 .products-submit-btn {
     width: 10%;
+    margin-left: 5px;
+    margin-right: 15px;
 }
 
 #button:hover {
@@ -41,14 +43,16 @@
 }
 
 .table-tools-btn {
-    width: 100%;
-    margin: 10px auto;
-    text-transform: uppercase;
-    font-weight: 500;
+    width: 40%;
+    margin: 0 auto;
     color: whitesmoke;
-    padding: 0 10px;
-    font-size:20px;
+    font-size: 15px;
+    height: 20px;
+    padding: 0;
+    border-radius: 10px;
+    border: none;
 }
+
 
 .table-info-btn {
     width: 10%;
@@ -57,10 +61,33 @@
 
 .add-group-btn {
     width: 30%;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.hinfo-btn {
+    width: 40%;
+    padding: 0 10px;
+    font-size: 19px;
 }
 
 @media screen and (max-width:700px) {
     .products-submit-btn {
         width: 50%;
+    }
+    .hinfo-btn {
+        width: 30%;
+        padding: 0 auto;
+    }
+    #button {
+        height: 40px;
+    }
+    .add-group-btn {
+        width: 95%;
+        padding: 0;
+    }
+
+    .products-submit-btn {
+        height: 10%;
     }
 } 

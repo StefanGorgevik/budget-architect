@@ -6,7 +6,7 @@ function Alert(props) {
     return (
         <main className="err-alert-main">
             <div className="err-alert-div">
-                <h1>Error</h1>
+                <h1>{props.title}</h1>
                 <p>{props.text}</p>
                 <Button click={props.accept}
                         name="ng-btn"

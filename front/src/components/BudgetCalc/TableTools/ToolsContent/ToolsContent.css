@@ -1,4 +1,11 @@
-
+.table-tools-content {
+    display: flex;
+    min-width: 80%;
+    height: 100%;
+    margin: 0 20px;
+    flex-direction: row;
+    align-items: center;
+}
 
 .add-type-btn:hover,
 .table-tools-btn:hover {

@@ -6,7 +6,7 @@ import Label from '../../Label/Label'
 
 function EmailInput(props) {
     return (
-        <div>
+        <div className="input-div">
             <Label id={props.id} label={props.label} />
             <input
                 onChange={props.saveValue}

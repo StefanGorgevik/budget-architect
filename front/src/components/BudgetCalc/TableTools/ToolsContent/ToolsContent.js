@@ -6,7 +6,6 @@ import SelectSort from '../SelectSort/SelectSort'
 function ToolsContent(props) {
     return (
         <div className="table-tools-content">
-            <h1>Tools</h1>
             <div className="filter-div">
                 <SelectSort selectSort={props.selectSort}
                     sorts={props.sorts}
@@ -14,7 +13,7 @@ function ToolsContent(props) {
                 />
             </div>
             <Button click={props.addNewGroupClicked}
-                content='Add a new group of products'
+                content='Add a new group'
                 name='table-tools-btn' />
         </div>
     )
